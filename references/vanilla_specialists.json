@@ -1,0 +1,472 @@
+[
+  {
+    "id": "Mechanic_01",
+    "rang": "1",
+    "speciality": "MECHANIC",
+    "cost": "600",
+    "locked": "True",
+    "mods": [
+      "AnchorSupplies",
+      "AnchorRadius",
+      "TruckDamage"
+    ],
+    "values": {
+      "anchorMaxLimitCount": "5",
+      "anchorRadiusIncreasedPercent": "100",
+      "truckDamageEngineReducedPercent": "30",
+      "truckDamageGearboxReducedPercent": "30",
+      "truckDamageGasTankReducedPercent": "30",
+      "truckDamageSuspensionReducedPercent": "30"
+    }
+  },
+  {
+    "id": "Mechanic_02",
+    "rang": "1",
+    "speciality": "MECHANIC",
+    "cost": "1400",
+    "locked": "True",
+    "mods": [
+      "RepairConsumption",
+      "TruckDamage",
+      "FuelConsumption"
+    ],
+    "values": {
+      "repairConsumpionReducedPercent": "30",
+      "truckDamageEngineReducedPercent": "15",
+      "truckDamageGearboxReducedPercent": "15",
+      "truckDamageGasTankReducedPercent": "15",
+      "truckDamageSuspensionReducedPercent": "15",
+      "fuelConsumpionReducedPercent": "15"
+    }
+  },
+  {
+    "id": "Mechanic_03",
+    "rang": "1",
+    "speciality": "MECHANIC",
+    "cost": "800",
+    "locked": "True",
+    "mods": [
+      "ArmorCapacity",
+      "ArmorRestoreEverywhere",
+      "FuelConsumption"
+    ],
+    "values": {
+      "armorEngineIncreasedPercent": "30",
+      "armorGearboxIncreasedPercent": "30",
+      "armorGasTankIncreasedPercent": "30",
+      "armorSuspencionIncreasedPercent": "30",
+      "fuelConsumpionReducedPercent": "20"
+    }
+  },
+  {
+    "id": "Mechanic_04",
+    "rang": "1",
+    "speciality": "MECHANIC",
+    "cost": "1500",
+    "locked": "True",
+    "mods": [
+      "EmergencyWinch",
+      "RepairBuildingConsumption",
+      "TruckDamage"
+    ],
+    "values": {
+      "winchFuelPerMinute": "20",
+      "repairBuildingConsumptionReducedPercent": "40",
+      "truckDamageEngineReducedPercent": "10",
+      "truckDamageGearboxReducedPercent": "10",
+      "truckDamageGasTankReducedPercent": "10",
+      "truckDamageSuspensionReducedPercent": "10",
+      "truckDamageWheelReducedPercent": "10"
+    }
+  },
+  {
+    "id": "Mechanic_05",
+    "rang": "1",
+    "speciality": "MECHANIC",
+    "cost": "1200",
+    "locked": "True",
+    "mods": [
+      "ElectricityConsumption",
+      "WheelDroneTorque",
+      "WheelDroneArmor",
+      "WheelDroneArmorRestoreEverywhere"
+    ],
+    "values": {
+      "wheelDroneElectricityConsumptionReducedPercent": "30",
+      "wheelDroneAbilityElectricityConsumptionReducedPercent": "30",
+      "metaldetectorElectricityConsumptionReducedPercent": "30",
+      "radarElectricityConsumptionReducedPercent": "30",
+      "wheelDroneTorqueIncreasedPercent": "50",
+      "wheelDroneArmorEngineIncreasedPercent": "30",
+      "wheelDroneArmorBatteryIncreasedPercent": "30",
+      "wheelDroneArmorSuspencionIncreasedPercent": "30"
+    }
+  },
+  {
+    "id": "Logistics_Specialist_01",
+    "rang": "1",
+    "speciality": "LOGISTICS_SPECIALIST",
+    "cost": "500",
+    "locked": "True",
+    "mods": [
+      "AdditionalDeployResources",
+      "BinocularRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "additionalDeployFuelCount": "100",
+      "additionalDeployRepairsCount": "200",
+      "binocularPartRadiusIncreasedMeters": "150"
+    }
+  },
+  {
+    "id": "Logistics_Specialist_02",
+    "rang": "-",
+    "speciality": "LOGISTICS_SPECIALIST",
+    "cost": "900",
+    "locked": "True",
+    "mods": [
+      "GuaranteedAirdropResource",
+      "AdditionalAddonSupplies",
+      "BinocularRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "guarantedAirdropFuelCount": "50",
+      "additionalAddonFuelCount": "10",
+      "binocularPartRadiusIncreasedMeters": "100"
+    }
+  },
+  {
+    "id": "Logistics_Specialist_03",
+    "rang": "-",
+    "speciality": "LOGISTICS_SPECIALIST",
+    "cost": "1000",
+    "locked": "True",
+    "mods": [
+      "EmergencyStockSupplies",
+      "AdditionalAddonSupplies",
+      "BinocularRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "emergencyStockRepairs": "50",
+      "emergencyStockWheels": "2",
+      "additionalAddonRepairsCount": "20",
+      "binocularPartRadiusIncreasedMeters": "100"
+    }
+  },
+  {
+    "id": "Logisitics_Specialist_04",
+    "rang": "-",
+    "speciality": "LOGISTICS_SPECIALIST",
+    "cost": "1000",
+    "locked": "True",
+    "mods": [
+      "WheelDroneZone",
+      "WheelDroneFriction",
+      "WheelDroneScoutRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "wheelDroneZoneIncreasedPercent": "50",
+      "wheelDroneOnModelFrictionIncreasedPercent": "200",
+      "wheelDroneBodyFrictionAsphaltIncreasedPercent": "200",
+      "wheelDroneSubstanceFrictionIncreasedPercent": "200",
+      "wheelDroneBodyFrictionIncreasedPercent": "200",
+      "wheelDroneFullScoutRadiusIncreasedMeters": "100",
+      "wheelDronePartScoutRadiusIncreasedMeters": "100"
+    }
+  },
+  {
+    "id": "Hydrologist_01",
+    "rang": "1",
+    "speciality": "HYDROLOGIST",
+    "cost": "600",
+    "locked": "True",
+    "mods": [
+      "EngineUnderwaterDamage",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "engineUnderwaterDamageReducedPercent": "100"
+    }
+  },
+  {
+    "id": "Hydrologist_02",
+    "rang": "1",
+    "speciality": "HYDROLOGIST",
+    "cost": "1500",
+    "locked": "True",
+    "mods": [
+      "EcholotModeAura",
+      "UnderwaterAnchorSetup",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "echolotRadiusOverrideMeters": "7",
+      "echolotStepCountOverride": "9",
+      "echolotApplicationAdditionalTime": "1"
+    }
+  },
+  {
+    "id": "Hydrologist_03",
+    "rang": "-",
+    "speciality": "HYDROLOGIST",
+    "cost": "1000",
+    "locked": "True",
+    "mods": [
+      "EcholotModeCone",
+      "EngineUnderwaterDamage",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "echolotRadiusOverrideMeters": "75",
+      "echolotStepCountOverride": "20",
+      "echolotConeAngle": "45",
+      "echolotApplicationAdditionalTime": "1",
+      "engineUnderwaterDamageReducedPercent": "50"
+    }
+  },
+  {
+    "id": "Hydrologist_04",
+    "rang": "-",
+    "speciality": "HYDROLOGIST",
+    "cost": "1200",
+    "locked": "True",
+    "mods": [
+      "EcholotModeSnow",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "echolotRadiusOverrideMeters": "20",
+      "echolotStepCountOverride": "20"
+    }
+  },
+  {
+    "id": "Jaeger_01",
+    "rang": "1",
+    "speciality": "JAEGER",
+    "cost": "700",
+    "locked": "True",
+    "mods": [
+      "JackscrewSupplies",
+      "FogOfWarTranspRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "jackscrewMaxLimitCount": "2",
+      "fogOfWarTranspRadiusInceasedMeters": "10"
+    }
+  },
+  {
+    "id": "Jaeger_02",
+    "rang": "-",
+    "speciality": "JAEGER",
+    "cost": "900",
+    "locked": "True",
+    "mods": [
+      "TruckDamage",
+      "BinocularRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "truckDamageWheelReducedPercent": "50",
+      "binocularFullRadiusIncreasedMeters": "100"
+    }
+  },
+  {
+    "id": "Jaeger_03",
+    "rang": "-",
+    "speciality": "JAEGER",
+    "cost": "1300",
+    "locked": "True",
+    "mods": [
+      "WinchImprove",
+      "FogOfWarTranspRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "winchLengthIncreasedMeters": "10",
+      "winchPowerIncreasedPercent": "30",
+      "fogOfWarTranspRadiusInceasedMeters": "10"
+    }
+  },
+  {
+    "id": "Jaeger_04",
+    "rang": "0",
+    "speciality": "JAEGER",
+    "cost": "1100",
+    "locked": "True",
+    "mods": [
+      "ImproveWinchedTruck",
+      "FogOfWarTranspRadius",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "engineResponsivenessIncreasedPercent": "30",
+      "torqueIncreasedPercent": "30",
+      "onModelFrictionIncreasedPercent": "30",
+      "bodyFrictionAsphaltIncreasedPercent": "30",
+      "substanceFrictionIncreasedPercent": "30",
+      "bodyFrictionIncreasedPercent": "30",
+      "fuelConsumptionReducedPercent": "30",
+      "fogOfWarTranspRadiusInceasedMeters": "20"
+    }
+  },
+  {
+    "id": "Operator_01",
+    "rang": "1",
+    "speciality": "OPERATOR",
+    "cost": "600",
+    "locked": "True",
+    "mods": [
+      "DroneRadius",
+      "DroneHeight",
+      "DroneScoutRadius",
+      "MayDiscoverZones",
+      "DroneAcceleration",
+      "DroneControllability"
+    ],
+    "values": {
+      "droneRadiusIncreasedMeters": "200",
+      "droneHeightIncreasedMeters": "20",
+      "droneFullScoutRadiusIncreasedMeters": "0",
+      "dronePartScoutRadiusIncreasedMeters": "50",
+      "droneAccelerationIncreasedPercent": "30",
+      "droneAccelerationHeightIncreasedPercent": "30",
+      "droneControllabilityResForceIncreasedPercent": "20",
+      "droneControllabilityResForceRotationIncreasedPercent": "20",
+      "droneControllabilityForceRotationIncreasedPercent": "20"
+    }
+  },
+  {
+    "id": "Operator_02",
+    "rang": "1",
+    "speciality": "OPERATOR",
+    "cost": "900",
+    "locked": "True",
+    "mods": [
+      "DroneTrade",
+      "DroneRadius",
+      "MayDiscoverZones",
+      "DroneAcceleration",
+      "DroneControllability"
+    ],
+    "values": {
+      "droneRadiusIncreasedMeters": "50",
+      "droneAccelerationIncreasedPercent": "30",
+      "droneAccelerationHeightIncreasedPercent": "30",
+      "droneControllabilityResForceIncreasedPercent": "20",
+      "droneControllabilityResForceRotationIncreasedPercent": "20",
+      "droneControllabilityForceRotationIncreasedPercent": "20"
+    }
+  },
+  {
+    "id": "Operator_03",
+    "rang": "-",
+    "speciality": "OPERATOR",
+    "cost": "1200",
+    "locked": "True",
+    "mods": [
+      "DroneMaxSpeed",
+      "DroneScoutRadius",
+      "DroneRadius",
+      "DroneControllability",
+      "DroneAcceleration",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "droneMaxSpeedIncreasedPercent": "70",
+      "droneFullScoutRadiusIncreasedMeters": "50",
+      "droneRadiusIncreasedMeters": "50",
+      "droneControllabilityResForceIncreasedPercent": "30",
+      "droneControllabilityResForceRotationIncreasedPercent": "30",
+      "droneControllabilityForceRotationIncreasedPercent": "30",
+      "droneAccelerationIncreasedPercent": "70",
+      "droneAccelerationHeightIncreasedPercent": "70"
+    }
+  },
+  {
+    "id": "Operator_04",
+    "rang": "-",
+    "speciality": "OPERATOR",
+    "cost": "1200",
+    "locked": "True",
+    "mods": [
+      "DroneItemSetup",
+      "DroneMaxSpeed",
+      "DroneMaxSpeed",
+      "DroneControllability",
+      "MayDiscoverZones"
+    ],
+    "values": {
+      "droneMaxSpeedIncreasedPercent": "25",
+      "droneControllabilityResForceIncreasedPercent": "50",
+      "droneControllabilityResForceRotationIncreasedPercent": "50",
+      "droneControllabilityForceRotationIncreasedPercent": "50"
+    }
+  },
+  {
+    "id": "Manager_01",
+    "rang": "1",
+    "speciality": "MANAGER",
+    "cost": "700",
+    "locked": "-",
+    "mods": [
+      "TreasureItemSellPrice"
+    ],
+    "values": {
+      "treasureItemSellPriceIncreasedPercent": "50"
+    }
+  },
+  {
+    "id": "Manager_02",
+    "rang": "1",
+    "speciality": "MANAGER",
+    "cost": "1500",
+    "locked": "True",
+    "mods": [
+      "FreeEvacuation",
+      "ItemCost",
+      "ItemSellPrice"
+    ],
+    "values": {
+      "freeEvacuationMaxLimitCount": "1",
+      "itemCostReducedPercent": "10",
+      "itemSellPriceIncreasedPercent": "30"
+    }
+  },
+  {
+    "id": "Manager_03",
+    "rang": "1",
+    "speciality": "MANAGER",
+    "cost": "3000",
+    "locked": "True",
+    "mods": [
+      "AdditionalReward",
+      "AdditionalTreasureItems"
+    ],
+    "values": {
+      "additionalRewardExpeditionIncreasedPercent": "20",
+      "additionalRewardSideQuestsIncreasedPercent": "20",
+      "additionalRewardTasksIncreasedPercent": "30",
+      "additionalTreasureItemsCount": "1"
+    }
+  },
+  {
+    "id": "Manager_04",
+    "rang": "1",
+    "speciality": "MANAGER",
+    "cost": "2000",
+    "locked": "True",
+    "mods": [
+      "AirdropReroll",
+      "ItemSellPrice"
+    ],
+    "values": {
+      "airdropRerollCost": "2000",
+      "itemSellPriceIncreasedPercent": "30"
+    }
+  }
+]

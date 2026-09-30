@@ -1,0 +1,15 @@
+{
+  "pak": "SpecialistDesc_Gusset.pak",
+  "cost": 1600,
+  "isLocked": false,
+  "modifiers": [
+    {"type": "ArmorCapacity", "group": "Armor", "icon": "specAbilityArmor36",
+     "fields": {
+       "armorEngineIncreasedPercent":    [120, "Engine armor", " +"],
+       "armorGearboxIncreasedPercent":   [120, "Transmission armor", " +"],
+       "armorGasTankIncreasedPercent":   [120, "Fuel tank armor", " +"],
+       "armorSuspencionIncreasedPercent":[120, "Suspension armor", " +"]}},
+    {"type": "RepairBuildingConsumption", "group": "Outposts", "icon": "specAbilityOutposts36",
+     "fields": {"repairBuildingConsumptionReducedPercent": [70, "Spare parts to repair a module", " -"]}}
+  ]
+}

@@ -1,0 +1,235 @@
+{
+ "generated_from": "meta_desc_ssl.ps (Expeditions editor schema)",
+ "note": "Saber ended support 2026-09; these definitions are frozen and cannot change.",
+ "speciality_enum": [
+  "MECHANIC",
+  "LOGISTICS_SPECIALIST",
+  "HYDROLOGIST",
+  "JAEGER",
+  "OPERATOR",
+  "MANAGER",
+  "NONE"
+ ],
+ "speciality_warning": "NONE (6) crashes the game. Never write it.",
+ "slot_sizes": {
+  "bage": [
+   364,
+   364
+  ],
+  "bg": [
+   380,
+   92
+  ],
+  "bgSmall": [
+   124,
+   52
+  ]
+ },
+ "ability_icons": [
+  "specAbilityAddonFuel36",
+  "specAbilityAirdrop36",
+  "specAbilityAnchor36",
+  "specAbilityArmor36",
+  "specAbilityBinocular36",
+  "specAbilityDrone36",
+  "specAbilityEcho36",
+  "specAbilityEngine36",
+  "specAbilityFord36",
+  "specAbilityFuel36",
+  "specAbilityJackscrew36",
+  "specAbilityMoney36",
+  "specAbilityOutposts36",
+  "specAbilityRecovery36",
+  "specAbilityRepair36",
+  "specAbilityShortcut36",
+  "specAbilityTrucks36",
+  "specAbilityUphills36",
+  "specAbilityWheels36",
+  "specAbilityWinch36",
+  "specAbilityDroneGround36"
+ ],
+ "modifiers": {
+  "AdditionalAddonSupplies": [
+   "additionalAddonFuelCount",
+   "additionalAddonRepairsCount",
+   "additionalAddonWheelsCount"
+  ],
+  "AdditionalDeployResources": [
+   "additionalDeployFuelCount",
+   "additionalDeployRepairsCount",
+   "additionalDeployWheelsCount"
+  ],
+  "AdditionalReward": [
+   "additionalRewardExpeditionIncreasedPercent",
+   "additionalRewardSideQuestsIncreasedPercent",
+   "additionalRewardTasksIncreasedPercent"
+  ],
+  "AdditionalTreasureItems": [
+   "additionalItem",
+   "additionalTreasureItemsCount"
+  ],
+  "AirdropReroll": [
+   "airdropRerollCost",
+   "airdropRerollLootLists"
+  ],
+  "AnchorRadius": [
+   "anchorIDs",
+   "anchorRadiusIncreasedPercent"
+  ],
+  "AnchorSupplies": [
+   "anchorIDs",
+   "anchorMaxLimitCount"
+  ],
+  "ArmorCapacity": [
+   "armorEngineIncreasedPercent",
+   "armorGasTankIncreasedPercent",
+   "armorGearboxIncreasedPercent",
+   "armorSuspencionIncreasedPercent"
+  ],
+  "ArmorRestoreEverywhere": [],
+  "BinocularRadius": [
+   "binocularFullRadiusIncreasedMeters",
+   "binocularPartRadiusIncreasedMeters"
+  ],
+  "DroneAcceleration": [
+   "droneAccelerationHeightIncreasedPercent",
+   "droneAccelerationIncreasedPercent"
+  ],
+  "DroneControllability": [
+   "droneControllabilityForceRotationIncreasedPercent",
+   "droneControllabilityResForceIncreasedPercent",
+   "droneControllabilityResForceRotationIncreasedPercent"
+  ],
+  "DroneDiscoverScoutZones": [],
+  "DroneHeight": [
+   "droneHeightIncreasedMeters"
+  ],
+  "DroneItemSetup": [
+   "droneItemSetupSettings"
+  ],
+  "DroneMaxSpeed": [
+   "droneMaxSpeedIncreasedPercent"
+  ],
+  "DroneRadius": [
+   "droneRadiusIncreasedMeters"
+  ],
+  "DroneScoutRadius": [
+   "droneFullScoutRadiusIncreasedMeters",
+   "dronePartScoutRadiusIncreasedMeters"
+  ],
+  "DroneTrade": [],
+  "EcholotModeAura": [
+   "echolotApplicationAdditionalTime",
+   "echolotRadiusOverrideMeters",
+   "echolotStepCountOverride"
+  ],
+  "EcholotModeCone": [
+   "echolotApplicationAdditionalTime",
+   "echolotConeAngle",
+   "echolotRadiusOverrideMeters",
+   "echolotStepCountOverride"
+  ],
+  "EcholotModeSnow": [
+   "echolotRadiusOverrideMeters",
+   "echolotStepCountOverride"
+  ],
+  "ElectricityConsumption": [
+   "metaldetectorElectricityConsumptionReducedPercent",
+   "radarElectricityConsumptionReducedPercent",
+   "wheelDroneAbilityElectricityConsumptionReducedPercent",
+   "wheelDroneElectricityConsumptionReducedPercent"
+  ],
+  "EmergencyStockSupplies": [
+   "emergencyStockFuel",
+   "emergencyStockRepairs",
+   "emergencyStockWheels"
+  ],
+  "EmergencyWinch": [
+   "winchFuelPerMinute"
+  ],
+  "EngineUnderwaterDamage": [
+   "engineUnderwaterDamageReducedPercent"
+  ],
+  "FogOfWarTranspRadius": [
+   "fogOfWarRadiusInceasedMeters",
+   "fogOfWarTranspRadiusInceasedMeters"
+  ],
+  "FreeEvacuation": [
+   "freeEvacuationMaxLimitCount"
+  ],
+  "FuelConsumption": [
+   "fuelConsumpionReducedPercent"
+  ],
+  "GuaranteedAirdropResource": [
+   "guarantedAirdropFuelCount",
+   "guarantedAirdropRepairCount",
+   "guarantedAirdropWheelCount"
+  ],
+  "ImproveWinchedTruck": [
+   "bodyFrictionAsphaltIncreasedPercent",
+   "bodyFrictionIncreasedPercent",
+   "engineResponsivenessIncreasedPercent",
+   "fuelConsumptionReducedPercent",
+   "onModelFrictionIncreasedPercent",
+   "substanceFrictionIncreasedPercent",
+   "torqueIncreasedPercent"
+  ],
+  "ItemCost": [
+   "itemCostReducedPercent"
+  ],
+  "ItemSellPrice": [
+   "itemSellPriceIncreasedPercent"
+  ],
+  "JackscrewSupplies": [
+   "jackscrewMaxLimitCount"
+  ],
+  "MayDiscoverZones": [
+   "mayDiscoverZonesByBinocular",
+   "mayDiscoverZonesByDrone"
+  ],
+  "RepairBuildingConsumption": [
+   "repairBuildingConsumptionDesc",
+   "repairBuildingConsumptionReducedPercent"
+  ],
+  "RepairConsumption": [
+   "repairConsumpionReducedPercent"
+  ],
+  "TreasureItemSellPrice": [
+   "treasureItemSellPriceIncreasedPercent"
+  ],
+  "TruckDamage": [
+   "truckDamageEngineReducedPercent",
+   "truckDamageGasTankReducedPercent",
+   "truckDamageGearboxReducedPercent",
+   "truckDamageSuspensionReducedPercent",
+   "truckDamageWheelReducedPercent"
+  ],
+  "UnderwaterAnchorSetup": [],
+  "WheelDroneArmor": [
+   "wheelDroneArmorBatteryIncreasedPercent",
+   "wheelDroneArmorEngineIncreasedPercent",
+   "wheelDroneArmorSuspencionIncreasedPercent"
+  ],
+  "WheelDroneArmorRestoreEverywhere": [],
+  "WheelDroneFriction": [
+   "wheelDroneBodyFrictionAsphaltIncreasedPercent",
+   "wheelDroneBodyFrictionIncreasedPercent",
+   "wheelDroneOnModelFrictionIncreasedPercent",
+   "wheelDroneSubstanceFrictionIncreasedPercent"
+  ],
+  "WheelDroneScoutRadius": [
+   "wheelDroneFullScoutRadiusIncreasedMeters",
+   "wheelDronePartScoutRadiusIncreasedMeters"
+  ],
+  "WheelDroneTorque": [
+   "wheelDroneTorqueIncreasedPercent"
+  ],
+  "WheelDroneZone": [
+   "wheelDroneZoneIncreasedPercent"
+  ],
+  "WinchImprove": [
+   "winchLengthIncreasedMeters",
+   "winchPowerIncreasedPercent"
+  ]
+ }
+}
