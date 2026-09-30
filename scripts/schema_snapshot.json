@@ -231,5 +231,503 @@
    "winchLengthIncreasedMeters",
    "winchPowerIncreasedPercent"
   ]
- }
+ },
+ "display_contract": {
+  "AdditionalAddonSupplies": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "additionalAddonRepairsCount"
+   ],
+   "never_labelled": [
+    "additionalAddonFuelCount"
+   ],
+   "custom_desc": []
+  },
+  "AdditionalDeployResources": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "additionalDeployFuelCount",
+    "additionalDeployRepairsCount"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "AdditionalReward": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "additionalRewardExpeditionIncreasedPercent",
+    "additionalRewardSideQuestsIncreasedPercent",
+    "additionalRewardTasksIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "AdditionalTreasureItems": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "additionalTreasureItemsCount"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "AirdropReroll": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "airdropRerollCost"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "AnchorRadius": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "anchorRadiusIncreasedPercent"
+   ],
+   "custom_desc": []
+  },
+  "AnchorSupplies": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "anchorMaxLimitCount"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "ArmorCapacity": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "armorEngineIncreasedPercent",
+    "armorGasTankIncreasedPercent",
+    "armorGearboxIncreasedPercent",
+    "armorSuspencionIncreasedPercent"
+   ],
+   "custom_desc": []
+  },
+  "ArmorRestoreEverywhere": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "BinocularRadius": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "binocularFullRadiusIncreasedMeters",
+    "binocularPartRadiusIncreasedMeters"
+   ],
+   "custom_desc": []
+  },
+  "DroneAcceleration": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "droneAccelerationHeightIncreasedPercent",
+    "droneAccelerationIncreasedPercent"
+   ],
+   "custom_desc": []
+  },
+  "DroneControllability": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "droneControllabilityForceRotationIncreasedPercent",
+    "droneControllabilityResForceIncreasedPercent",
+    "droneControllabilityResForceRotationIncreasedPercent"
+   ],
+   "custom_desc": []
+  },
+  "DroneHeight": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "droneHeightIncreasedMeters"
+   ],
+   "custom_desc": []
+  },
+  "DroneItemSetup": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "DroneMaxSpeed": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "droneMaxSpeedIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "DroneRadius": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "droneRadiusIncreasedMeters"
+   ],
+   "custom_desc": []
+  },
+  "DroneScoutRadius": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "droneFullScoutRadiusIncreasedMeters",
+    "dronePartScoutRadiusIncreasedMeters"
+   ],
+   "custom_desc": []
+  },
+  "DroneTrade": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "EcholotModeAura": {
+   "mode": [
+    "override"
+   ],
+   "labelled": [
+    "echolotRadiusOverrideMeters",
+    "echolotStepCountOverride"
+   ],
+   "never_labelled": [
+    "echolotApplicationAdditionalTime"
+   ],
+   "custom_desc": []
+  },
+  "EcholotModeCone": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "echolotApplicationAdditionalTime",
+    "echolotConeAngle",
+    "echolotRadiusOverrideMeters",
+    "echolotStepCountOverride"
+   ],
+   "custom_desc": []
+  },
+  "EcholotModeSnow": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "echolotRadiusOverrideMeters",
+    "echolotStepCountOverride"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "ElectricityConsumption": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "metaldetectorElectricityConsumptionReducedPercent",
+    "radarElectricityConsumptionReducedPercent",
+    "wheelDroneAbilityElectricityConsumptionReducedPercent",
+    "wheelDroneElectricityConsumptionReducedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "EmergencyStockSupplies": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "emergencyStockRepairs",
+    "emergencyStockWheels"
+   ],
+   "custom_desc": []
+  },
+  "EmergencyWinch": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "winchFuelPerMinute"
+   ],
+   "custom_desc": []
+  },
+  "EngineUnderwaterDamage": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "engineUnderwaterDamageReducedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "FogOfWarTranspRadius": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "fogOfWarTranspRadiusInceasedMeters"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "FreeEvacuation": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "freeEvacuationMaxLimitCount"
+   ],
+   "custom_desc": []
+  },
+  "FuelConsumption": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "fuelConsumpionReducedPercent"
+   ],
+   "custom_desc": []
+  },
+  "GuaranteedAirdropResource": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "guarantedAirdropFuelCount"
+   ],
+   "custom_desc": []
+  },
+  "ImproveWinchedTruck": {
+   "mode": [
+    "allSame",
+    "override"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "bodyFrictionAsphaltIncreasedPercent",
+    "bodyFrictionIncreasedPercent",
+    "engineResponsivenessIncreasedPercent",
+    "fuelConsumptionReducedPercent",
+    "onModelFrictionIncreasedPercent",
+    "substanceFrictionIncreasedPercent",
+    "torqueIncreasedPercent"
+   ],
+   "custom_desc": []
+  },
+  "ItemCost": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "itemCostReducedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "ItemSellPrice": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "itemSellPriceIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "JackscrewSupplies": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "jackscrewMaxLimitCount"
+   ],
+   "custom_desc": []
+  },
+  "MayDiscoverZones": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "mayDiscoverZonesByBinocular",
+    "mayDiscoverZonesByDrone"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "RepairBuildingConsumption": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "repairBuildingConsumptionReducedPercent"
+   ],
+   "custom_desc": [
+    "repairBuildingConsumptionDesc"
+   ]
+  },
+  "RepairConsumption": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "repairConsumpionReducedPercent"
+   ],
+   "custom_desc": []
+  },
+  "TreasureItemSellPrice": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "treasureItemSellPriceIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "TruckDamage": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "truckDamageEngineReducedPercent",
+    "truckDamageGasTankReducedPercent",
+    "truckDamageGearboxReducedPercent",
+    "truckDamageSuspensionReducedPercent",
+    "truckDamageWheelReducedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "UnderwaterAnchorSetup": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneArmor": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "wheelDroneArmorBatteryIncreasedPercent",
+    "wheelDroneArmorEngineIncreasedPercent",
+    "wheelDroneArmorSuspencionIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneArmorRestoreEverywhere": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneFriction": {
+   "mode": [
+    "override"
+   ],
+   "labelled": [
+    "wheelDroneBodyFrictionAsphaltIncreasedPercent",
+    "wheelDroneBodyFrictionIncreasedPercent",
+    "wheelDroneOnModelFrictionIncreasedPercent",
+    "wheelDroneSubstanceFrictionIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneScoutRadius": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "wheelDroneFullScoutRadiusIncreasedMeters",
+    "wheelDronePartScoutRadiusIncreasedMeters"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneTorque": {
+   "mode": [
+    "per-field"
+   ],
+   "labelled": [
+    "wheelDroneTorqueIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WheelDroneZone": {
+   "mode": [
+    "allSame"
+   ],
+   "labelled": [
+    "wheelDroneZoneIncreasedPercent"
+   ],
+   "never_labelled": [],
+   "custom_desc": []
+  },
+  "WinchImprove": {
+   "mode": [
+    "override"
+   ],
+   "labelled": [],
+   "never_labelled": [
+    "winchLengthIncreasedMeters",
+    "winchPowerIncreasedPercent"
+   ],
+   "custom_desc": []
+  }
+ },
+ "display_contract_note": "Derived from the 25 shipped specialists. mode override/allSame means ONE line for the whole modifier and its numeric fields carry no per-field label. never_labelled fields are deliberately not displayed. custom_desc is a descriptor field with a non-standard name. A modifier absent here is unused by vanilla and unproven."
 }

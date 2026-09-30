@@ -316,20 +316,93 @@ def remove_modifier(desc: dict, short_name: str) -> dict:
 def add_modifier(desc: dict, modifier: dict) -> None:
     """Append a modifier, refusing a duplicate type.
 
-    🚨 A modifier whose per-field `<field>UiDesc` block is null DOES NOT RENDER.
-    The ability still applies; it is simply invisible on the card, which reads
-    to a player as "the specialist lost its abilities". `group` alone is not
-    enough - that was proven on the Olympian's UnderwaterAnchorSetup.
+    🚨 EVERY MODIFIER HAS ITS OWN DISPLAY CONTRACT. There is no single rule.
+
+    The obvious one, "give every numeric field a `<field>UiDesc`", is right for
+    many modifiers and silently wrong for others. Three shipped in a build that
+    passed every structural check and rendered NOTHING on the card:
+
+      ImproveWinchedTruck        one `overrideUiDesc` line, fields unlabelled
+      EmergencyWinch             `group` only, the field carries no label
+      RepairBuildingConsumption  labelled by `repairBuildingConsumptionDesc`,
+                                 a field with a NON-STANDARD name
+
+    And the reverse trap: vanilla deliberately leaves some fields unlabelled,
+    such as `echolotApplicationAdditionalTime`. "Fixing" those adds a label the
+    game never shows.
+
+    So the contract is taken from how the 25 shipped specialists actually do it,
+    in `schema_snapshot.json -> display_contract`, rather than from a rule.
+    Copy vanilla's shape for the modifier you are writing.
     """
     short = modifier["$type"].replace("SpecialistModifier", "")
     if find_modifier(desc, short) is not None:
         raise ValueError(f"{short} already on {desc['SslValue'].get('uiName')!r}")
-    missing = [k for k, v in modifier.items()
-               if not k.endswith("UiDesc") and k not in ("$type", "name", "group")
-               and isinstance(v, (int, float)) and modifier.get(k + "UiDesc") is None]
-    if missing:
-        raise ValueError(f"these fields would be invisible without a UiDesc block: {missing}")
+    for problem in display_problems(modifier):
+        raise ValueError(problem)
     desc["SslValue"]["modifiers"].append(modifier)
+
+
+def display_contract(short_name: str) -> dict | None:
+    """How the shipped specialists display this modifier, or None if unused.
+
+    Useful as a reference when authoring. NOT a predictor of what renders: see
+    display_problems.
+    """
+    return _snapshot().get("display_contract", {}).get(short_name)
+
+
+#: Modifiers proven NOT to render with ordinary per-field `<field>UiDesc`
+#: labels, each confirmed by a screenshot of the card showing nothing where the
+#: ability should be. The working shape, copied from vanilla, is given.
+#:
+#: ⚠ THIS IS A LIST OF OBSERVATIONS, NOT A RULE. Plenty of modifiers whose
+#: vanilla shape also uses override/allSame render per-field labels perfectly:
+#: WinchImprove, ArmorCapacity, DroneAcceleration, BinocularRadius and others
+#: were all confirmed rendering with per-field labels on the same screen. Why
+#: these three differ is not established, so do not extend the list by analogy.
+#: Add to it only when a card has been seen with the ability missing.
+_WILL_NOT_RENDER_PER_FIELD = {
+    # modifier: (what the working shape requires, how to say it)
+    "ImproveWinchedTruck": (
+        lambda m, nums: bool(m.get("overrideUiDesc") or m.get("allSameUiDesc"))
+                        and not any(m.get(k + "UiDesc") for k in nums),
+        "set a single overrideUiDesc line and remove the per-field labels; "
+        "vanilla uses SPEC_MODS_WINCHED_BUFF"),
+    "EmergencyWinch": (
+        lambda m, nums: not any(m.get(k + "UiDesc") for k in nums),
+        "give it a group and NO field label at all; vanilla labels nothing here"),
+    "RepairBuildingConsumption": (
+        lambda m, nums: bool(m.get("repairBuildingConsumptionDesc"))
+                        and not any(m.get(k + "UiDesc") for k in nums),
+        "label it with repairBuildingConsumptionDesc, a descriptor field with a "
+        "non-standard name, and remove the per-field label"),
+}
+
+
+def display_problems(modifier: dict) -> list[str]:
+    """Reasons this modifier is known not to render.
+
+    Only reports cases actually observed failing on a card. An earlier version
+    inferred a rule from vanilla's shape and flagged a dozen abilities that
+    screenshots showed working, which is worse than not checking at all.
+    """
+    short = modifier["$type"].replace("SpecialistModifier", "")
+    nums = [k for k, v in modifier.items()
+            if isinstance(v, (int, float)) and not k.endswith("UiDesc")
+            and k not in ("$type", "name", "group")]
+    out: list[str] = []
+    if short in _WILL_NOT_RENDER_PER_FIELD:
+        ok, advice = _WILL_NOT_RENDER_PER_FIELD[short]
+        if not ok(modifier, nums):
+            out.append(f"{short} will not render as written (observed on a card): {advice}")
+        return out
+    if not (modifier.get("overrideUiDesc") or modifier.get("allSameUiDesc")):
+        never = set((display_contract(short) or {}).get("never_labelled", []))
+        silent = [k for k in nums if modifier.get(k + "UiDesc") is None and k not in never]
+        if silent:
+            out.append(f"no UiDesc on {silent}: those apply but may not show on the card")
+    return out
 
 
 def ui_desc(text: str, value_prefix: str = " +", icon30: str = "", hidden: bool = False) -> dict:

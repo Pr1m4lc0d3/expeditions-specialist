@@ -74,13 +74,11 @@ def check(pak: Path) -> tuple[str, list[str]]:
         if len(v.get("uiName", "")) > 20:
             problems.append(f"uiName is {len(v['uiName'])} chars, the limit is 20")
 
+        # Display is per-modifier, not one rule. Judged against how the 25
+        # shipped specialists actually do it.
         for m in v.get("modifiers", []):
-            for k, x in m.items():
-                if k.endswith("UiDesc") or k in ("$type", "name", "group",
-                                                 "allSameUiDesc", "overrideUiDesc"):
-                    continue
-                if isinstance(x, (int, float)) and m.get(k + "UiDesc") is None:
-                    problems.append(f"{k} has no UiDesc: it applies but never shows on the card")
+            for why in sp.display_problems(m):
+                problems.append(why)
     return v.get("uiName", pak.stem), problems
 
 

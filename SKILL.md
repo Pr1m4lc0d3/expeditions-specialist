@@ -66,11 +66,35 @@ paks carry a `.json` twin, some do not. Write every twin present and assert they
 are byte identical, or you will change values, see no effect, and conclude the
 field does not work.
 
-### 4. A numeric field with no `UiDesc` applies invisibly
+### 4. An ability applies but never appears on the card
 
-A field whose `<field>UiDesc` block is null still takes effect and never appears
-on the card. `group` alone is not enough. To a player that reads as a missing
-ability. Two shipped specialists carried this for over a year.
+Two different faults share this symptom, and the second one cost a build that
+passed every structural check.
+
+**A numeric field with no `<field>UiDesc`** still takes effect and never shows.
+`group` alone is not enough. Two shipped specialists carried this for a year.
+
+**Three modifiers do not render with per-field labels at all**, no matter how
+correct the labels are. Each needs the shape vanilla uses:
+
+| modifier | what works |
+|---|---|
+| `ImproveWinchedTruck` | one `overrideUiDesc` line, no per-field labels |
+| `EmergencyWinch` | a `group` and no field label at all |
+| `RepairBuildingConsumption` | `repairBuildingConsumptionDesc`, a descriptor field with a non-standard name |
+
+⚠ **That is a list of observations, not a rule.** Plenty of modifiers whose
+vanilla shape also uses `overrideUiDesc` render per-field labels perfectly:
+`WinchImprove`, `ArmorCapacity`, `DroneAcceleration` and `BinocularRadius` were
+all confirmed working with per-field labels on the same screen. Why those three
+differ is not established. **Do not extend the list by analogy.** Add to it only
+when you have seen a card with the ability missing.
+
+`schema_snapshot.json -> display_contract` records how all 25 shipped
+specialists display all 46 modifiers, which is the reference to copy from.
+`specialist_doctor.py` flags only the three confirmed cases, because an earlier
+version inferred a rule from vanilla's shape and reported a dozen working
+abilities as broken, which is worse than not checking.
 
 ### 5. An opaque source renders as a black rectangle
 
