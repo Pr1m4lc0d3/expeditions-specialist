@@ -124,6 +124,46 @@ def describe(v: dict) -> str:
     return "\n".join(lines)
 
 
+def screenshots_for(stem: str, dist: Path) -> list[str]:
+    """Gallery images for one specialist.
+
+    Drop in-game screenshots at `dist/screenshots/<pak stem>*.png|jpg`. These
+    matter more than the generated logo: they show the real card, which is what
+    anyone browsing actually wants to see.
+    """
+    folder = dist / "screenshots"
+    if not folder.is_dir():
+        return []
+    return [str(p) for p in sorted(folder.glob(f"{stem}*"))
+            if p.suffix.lower() in (".png", ".jpg", ".jpeg")]
+
+
+def prepare_image(src: Path, out_dir: Path) -> Path:
+    """Downscale to 1920x1080 JPEG. A 4K PNG screenshot is ~6 MB, near the cap."""
+    from PIL import Image
+    out_dir.mkdir(parents=True, exist_ok=True)
+    dest = out_dir / (src.stem + ".jpg")
+    im = Image.open(src).convert("RGB")
+    if im.width > 1920:
+        im = im.resize((1920, round(im.height * 1920 / im.width)), Image.LANCZOS)
+    im.save(dest, "JPEG", quality=90, optimize=True)
+    return dest
+
+
+def upload_media(mod_id: int, shots: list[str], dist: Path) -> None:
+    if not shots:
+        print("      no screenshots found; see dist/screenshots/")
+        return
+    prepared = [prepare_image(Path(s), dist / "_media") for s in shots[:10]]
+    files = [(f"image{i+1}", p) for i, p in enumerate(prepared)]
+    code, data = _req("POST", f"/games/{GAME_ID}/mods/{mod_id}/media", files=files)
+    ok = code in (200, 201)
+    total = sum(p.stat().st_size for p in prepared) // 1024
+    print(f"      media       {'ok' if ok else 'FAILED ' + str(code)} "
+          f"{len(prepared)} image(s), {total} KB"
+          f"{'' if ok else ' ' + json.dumps(data)[:200]}")
+
+
 def build_manifest(paks: list[Path], dist: Path) -> list[dict]:
     out = []
     for pak in paks:
@@ -137,6 +177,7 @@ def build_manifest(paks: list[Path], dist: Path) -> list[dict]:
             "tags": ["Specialist", "Subscribe", "Singleplayer"],
             "logo": str(dist / "logos" / (pak.stem + ".png")),
             "zips": {p: str(z) for p, z in zips.items()},
+            "screenshots": screenshots_for(pak.stem, dist),
         })
     return out
 
@@ -151,11 +192,17 @@ def find_existing(name: str) -> dict | None:
     return None
 
 
-def publish(entry: dict, public: bool) -> None:
+def publish(entry: dict, public: bool, dist: Path, media_only: bool = False) -> None:
     existing = find_existing(entry["name"])
     if existing:
         mod_id = existing["id"]
-        print(f"    exists as mod {mod_id}, adding files only")
+        print(f"    exists as mod {mod_id}" + (", media only" if media_only else ", adding files only"))
+        if media_only:
+            upload_media(mod_id, entry.get("screenshots", []), dist)
+            return
+    elif media_only:
+        print("    not published yet, nothing to attach media to")
+        return
     else:
         code, data = _req("POST", f"/games/{GAME_ID}/mods",
                           fields=[("name", entry["name"]),
@@ -180,6 +227,7 @@ def publish(entry: dict, public: bool) -> None:
         ok = code in (200, 201)
         print(f"      {modio_name:12s} {'ok' if ok else 'FAILED ' + str(code)}"
               f"{'' if ok else ' ' + json.dumps(data)[:200]}")
+    upload_media(mod_id, entry.get("screenshots", []), dist)
 
 
 def main() -> int:
@@ -189,6 +237,8 @@ def main() -> int:
     ap.add_argument("--publish", action="store_true", help="actually write to mod.io")
     ap.add_argument("--public", action="store_true", help="create visible instead of hidden")
     ap.add_argument("--only", action="append", help="limit to a pak stem, repeatable")
+    ap.add_argument("--media-only", action="store_true",
+                    help="attach screenshots to already-published mods and nothing else")
     args = ap.parse_args()
 
     dist = Path(__file__).parent.parent / "dist"
@@ -229,8 +279,10 @@ def main() -> int:
             else:
                 print(f"    6 zips, markers correct -> "
                       f"{', '.join(PLATFORM[s] for s in e['zips'])}")
+        shots = e.get("screenshots", [])
+        print(f"    screenshots {len(shots)}" + ("" if shots else "  (none in dist/screenshots/)"))
         if args.publish and not problems:
-            publish(e, args.public)
+            publish(e, args.public, dist, media_only=args.media_only)
     if not args.publish:
         print(f"\n{'ready' if not problems else str(problems) + ' problems'}. "
               f"Add --publish to write. Nothing has been sent.")
