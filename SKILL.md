@@ -154,6 +154,30 @@ python scripts/set_specialist_stats.py --help
 python scripts/specialist_doctor.py
 ```
 
+## Publishing to mod.io
+
+Full detail in `references/publishing.md`.
+
+```
+python scripts/pack_distribution.py --all    # paks -> 6 platform zips each
+python scripts/make_modio_logo.py            # badges -> logos (mod.io requires one)
+python scripts/modio_publish.py --manifest   # the plan; edit the summaries
+python scripts/modio_publish.py              # DRY RUN
+python scripts/modio_publish.py --publish    # create hidden; --public to go live
+```
+
+Three things that bite:
+
+**The platform names do not match.** The zip suffix is `pc`, the marker inside
+is `pc.pak`, and mod.io's API wants `windows`. Uploading a Switch build tagged
+`windows` produces no error.
+
+**Cloudflare 403s the default `urllib` user agent** with a body that reads like
+an auth failure. Error 1010, blocked browser signature. Send a browser UA.
+
+**Console zips go to Saber's review queue**, and a `Console_Selected` tag
+appears when they pass. Do not set it yourself.
+
 ## Descriptor rules
 
 | Field | Rule |
@@ -198,6 +222,10 @@ The ones that work are plausible names where the pun is phonetic and incidental.
 | `scripts/clone_specialist.py` | new specialist from an existing pak |
 | `scripts/set_specialist_stats.py` | abilities, cost, lock state, from a JSON design |
 | `scripts/set_specialist_texture.py` | swap one or more textures in an existing pak |
+| `scripts/pack_distribution.py` | pak -> the six platform zips mod.io wants |
+| `scripts/make_modio_logo.py` | badge -> a 1280x720 mod.io logo |
+| `scripts/modio_publish.py` | create the mod and upload all six platform files |
+| `references/publishing.md` | the mod.io process, platform mapping, auth |
 | `examples/vera_platt.json` | a worked design file |
 | `scripts/schema_snapshot.json` | the 47 modifiers and their fields, for machines without the editor |
 | `references/framing.md` | measurements and the crop rules |

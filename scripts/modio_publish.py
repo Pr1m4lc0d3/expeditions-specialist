@@ -1,0 +1,241 @@
+#!/usr/bin/env python3
+"""Publish specialists to mod.io without the 36-trip wizard.
+
+mod.io's Add Mod wizard makes you upload each platform zip separately, choose
+its platform from a checkbox, and come back to step 3 for the next one. Six
+platforms times six specialists is thirty-six passes through a web form, and
+getting one platform checkbox wrong is silent.
+
+    python modio_publish.py --manifest            # build the plan from your paks
+    python modio_publish.py                       # DRY RUN, prints what it would do
+    python modio_publish.py --publish             # do it, HIDDEN
+    python modio_publish.py --publish --public    # do it, visible to everyone
+
+Nothing is written without --publish, and even then mods are created hidden
+unless you also pass --public, because publishing is hard to take back.
+
+Auth comes from the token the game's own MOD BROWSER already stored at
+`<My Games>/Expeditions/base/Mods/.modio/authentication.json`. Nothing is
+printed from it. Override with MODIO_TOKEN.
+
+🚨 Cloudflare rejects the default urllib user agent with a 403 that reads like
+an auth failure. It is not. The UA below is required.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import mimetypes
+import os
+import sys
+import urllib.error
+import urllib.request
+import uuid
+import zipfile
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+import specialist as sp  # noqa: E402
+
+GAME_ID = 5734                      # Expeditions: A MudRunner Game
+API = "https://api.mod.io/v1"
+UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+      "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+
+#: zip suffix -> the name mod.io uses. These do not match, and a wrong mapping
+#: uploads a Switch build as a Windows one with no error.
+PLATFORM = {"pc": "windows", "nx64": "switch",
+            "playstation_4": "ps4", "playstation_5": "ps5",
+            "xbox_one": "xboxone", "xbox_series": "xboxseriesx"}
+
+CLASSES = {0: "Mechanic", 1: "Logistics Specialist", 2: "Hydrologist",
+           3: "Jaeger", 4: "Operator", 5: "Manager"}
+
+
+def token() -> str:
+    t = os.environ.get("MODIO_TOKEN")
+    if t:
+        return t
+    auth = (Path.home() / "Documents" / "My Games" / "Expeditions" / "base"
+            / "Mods" / ".modio" / "authentication.json")
+    if not auth.is_file():
+        raise SystemExit("No token. Sign in to the MOD BROWSER in game, or set MODIO_TOKEN.")
+    return json.loads(auth.read_text(encoding="utf-8", errors="replace"))["access_token"]
+
+
+def _req(method: str, path: str, *, fields=None, files=None):
+    body, ctype = None, None
+    if fields or files:
+        b = uuid.uuid4().hex
+        ctype = f"multipart/form-data; boundary={b}"
+        parts = []
+        for k, v in (fields or []):
+            parts.append(f"--{b}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n"
+                         .encode("utf-8"))
+        for k, p in (files or []):
+            p = Path(p)
+            mt = mimetypes.guess_type(p.name)[0] or "application/octet-stream"
+            parts.append(f"--{b}\r\nContent-Disposition: form-data; name=\"{k}\"; "
+                         f"filename=\"{p.name}\"\r\nContent-Type: {mt}\r\n\r\n".encode("utf-8"))
+            parts.append(p.read_bytes())
+            parts.append(b"\r\n")
+        parts.append(f"--{b}--\r\n".encode("utf-8"))
+        body = b"".join(parts)
+    r = urllib.request.Request(API + path, data=body, method=method,
+                               headers={"Authorization": "Bearer " + token(),
+                                        "Accept": "application/json", "User-Agent": UA,
+                                        **({"Content-Type": ctype} if ctype else {})})
+    try:
+        return 200, json.loads(urllib.request.urlopen(r, timeout=300).read() or b"{}")
+    except urllib.error.HTTPError as e:
+        try:
+            return e.code, json.loads(e.read() or b"{}")
+        except Exception:
+            return e.code, {}
+
+
+def summarise(desc: str, limit: int = 250) -> str:
+    """mod.io caps the summary at 250 characters, so cut on a sentence."""
+    out = ""
+    for sentence in desc.replace("\n", " ").split(". "):
+        candidate = (out + sentence).strip()
+        if len(candidate) + 1 > limit:
+            break
+        out = candidate + ". "
+    return (out or desc[:limit - 1]).strip()
+
+
+def describe(v: dict) -> str:
+    lines = [v["uiDesc"], "", f"Class: {CLASSES.get(v.get('speciality'), '?')}",
+             f"Hire cost: {v.get('cost')}", "", "Abilities:"]
+    for m in v["modifiers"]:
+        for k, x in m.items():
+            if k.endswith("UiDesc") or not isinstance(x, (int, float)):
+                continue
+            u = m.get(k + "UiDesc") or {}
+            if u.get("text") and not u.get("hidden"):
+                lines.append(f"  {u['text']}{u.get('valuePrefix', ' ')}{x}")
+        for k in m:
+            if (k.endswith("UiDesc") and k[:-6] not in m
+                    and k not in ("allSameUiDesc", "overrideUiDesc")):
+                u = m.get(k) or {}
+                if u.get("text") and not u.get("hidden"):
+                    lines.append(f"  {u['text']}")
+    return "\n".join(lines)
+
+
+def build_manifest(paks: list[Path], dist: Path) -> list[dict]:
+    out = []
+    for pak in paks:
+        v = sp.read_descriptor(pak)["SslValue"]
+        zips = {plat: dist / f"{pak.stem}_{plat}.zip" for plat in PLATFORM}
+        out.append({
+            "pak": str(pak),
+            "name": f"pUrpLmUnk3y Presents: {v['uiName']}",
+            "summary": summarise(v["uiDesc"]),
+            "description": describe(v),
+            "tags": ["Specialist", "Subscribe", "Singleplayer"],
+            "logo": str(dist / "logos" / (pak.stem + ".png")),
+            "zips": {p: str(z) for p, z in zips.items()},
+        })
+    return out
+
+
+def find_existing(name: str) -> dict | None:
+    code, data = _req("GET", f"/me/mods?game_id={GAME_ID}&_limit=100")
+    if code != 200:
+        return None
+    for m in data.get("data", []):
+        if m.get("name") == name:
+            return m
+    return None
+
+
+def publish(entry: dict, public: bool) -> None:
+    existing = find_existing(entry["name"])
+    if existing:
+        mod_id = existing["id"]
+        print(f"    exists as mod {mod_id}, adding files only")
+    else:
+        code, data = _req("POST", f"/games/{GAME_ID}/mods",
+                          fields=[("name", entry["name"]),
+                                  ("summary", entry["summary"]),
+                                  ("description", entry["description"]),
+                                  ("visible", "1" if public else "0"),
+                                  ("maturity_option", "0")]
+                                 + [("tags[]", t) for t in entry["tags"]],
+                          files=[("logo", entry["logo"])])
+        if code != 201 and code != 200:
+            print(f"    FAILED to create: {code} {json.dumps(data)[:300]}")
+            return
+        mod_id = data["id"]
+        print(f"    created mod {mod_id} ({'public' if public else 'hidden'})")
+    for suffix, modio_name in PLATFORM.items():
+        z = Path(entry["zips"][suffix])
+        code, data = _req("POST", f"/games/{GAME_ID}/mods/{mod_id}/files",
+                          fields=[("version", "1.0"), ("active", "true"),
+                                  ("changelog", "Initial release."),
+                                  ("platforms[]", modio_name)],
+                          files=[("filedata", z)])
+        ok = code in (200, 201)
+        print(f"      {modio_name:12s} {'ok' if ok else 'FAILED ' + str(code)}"
+              f"{'' if ok else ' ' + json.dumps(data)[:200]}")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--manifest", action="store_true", help="write the plan and stop")
+    ap.add_argument("--publish", action="store_true", help="actually write to mod.io")
+    ap.add_argument("--public", action="store_true", help="create visible instead of hidden")
+    ap.add_argument("--only", action="append", help="limit to a pak stem, repeatable")
+    args = ap.parse_args()
+
+    dist = Path(__file__).parent.parent / "dist"
+    mf_path = dist / "modio_manifest.json"
+    if args.manifest or not mf_path.is_file():
+        paks = [p for p in sorted(sp.mods_dir().glob("SpecialistDesc_*.pak")) if p.stat().st_size]
+        mf = build_manifest(paks, dist)
+        dist.mkdir(parents=True, exist_ok=True)
+        mf_path.write_text(json.dumps(mf, indent=2), encoding="utf-8")
+        print(f"manifest written: {mf_path}  ({len(mf)} specialists)")
+        print("Edit the summaries and descriptions in it before publishing.")
+        if args.manifest:
+            return 0
+    mf = json.loads(mf_path.read_text(encoding="utf-8"))
+    if args.only:
+        mf = [e for e in mf if any(o.lower() in Path(e["pak"]).stem.lower() for o in args.only)]
+
+    problems = 0
+    print(f"\n{'PUBLISHING' if args.publish else 'DRY RUN'}  game {GAME_ID}  "
+          f"{len(mf)} specialists  {'PUBLIC' if args.public else 'hidden'}\n")
+    for e in mf:
+        print(f"  {e['name']}")
+        print(f"    summary  {len(e['summary'])}/250  {e['summary'][:90]}")
+        logo = Path(e["logo"])
+        if not logo.is_file():
+            print("    LOGO MISSING, mod.io will refuse creation"); problems += 1
+        missing = [p for p, z in e["zips"].items() if not Path(z).is_file()]
+        if missing:
+            print(f"    ZIPS MISSING: {missing}"); problems += 1
+        else:
+            bad = []
+            for suffix, z in e["zips"].items():
+                with zipfile.ZipFile(z) as zz:
+                    if f"{suffix}.pak" not in zz.namelist():
+                        bad.append(suffix)
+            if bad:
+                print(f"    WRONG MARKER inside: {bad}"); problems += 1
+            else:
+                print(f"    6 zips, markers correct -> "
+                      f"{', '.join(PLATFORM[s] for s in e['zips'])}")
+        if args.publish and not problems:
+            publish(e, args.public)
+    if not args.publish:
+        print(f"\n{'ready' if not problems else str(problems) + ' problems'}. "
+              f"Add --publish to write. Nothing has been sent.")
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
