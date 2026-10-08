@@ -1,0 +1,6 @@
+pillow
+numpy
+opencv-python
+# optional: only needed to cut an opaque portrait. A portrait that already has
+# alpha works without it, and this pulls ~200 MB of onnxruntime.
+# rembg
