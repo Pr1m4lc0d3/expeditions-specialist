@@ -24,7 +24,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 import specialist as sp  # noqa: E402
 
 W, H = 1280, 720
-BANNER = "pUrpLmUnk3y Presents"
 
 
 def _font(size: int, bold: bool = False):
@@ -38,6 +37,8 @@ def _font(size: int, bold: bool = False):
 
 
 def compose(badge: Image.Image, name: str, subtitle: str = "") -> Image.Image:
+    # No publisher banner. One was copied off his older mod.io listings and he
+    # does not use that moniker any more; do not reintroduce it.
     badge = badge.convert("RGBA")
     # background: the badge itself, blown up and blurred, so the card picks up
     # the character's own colours instead of a flat swatch
@@ -59,7 +60,6 @@ def compose(badge: Image.Image, name: str, subtitle: str = "") -> Image.Image:
         a = int(255 * (1 - i / 70))
         d.line([(470 + i, 0), (470 + i, H)], fill=(14, 14, 16, a))
 
-    d.text((54, 250), BANNER, font=_font(30), fill=(176, 142, 232))
     # Fit the name to the panel instead of assuming it fits. At 66px "Bonnie
     # Sweete" and "Tuck Treadwell" both ran off the panel and over the face.
     avail = 470 - 54 - 24

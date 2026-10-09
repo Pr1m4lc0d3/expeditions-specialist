@@ -171,7 +171,7 @@ def build_manifest(paks: list[Path], dist: Path) -> list[dict]:
         zips = {plat: dist / f"{pak.stem}_{plat}.zip" for plat in PLATFORM}
         out.append({
             "pak": str(pak),
-            "name": f"pUrpLmUnk3y Presents: {v['uiName']}",
+            "name": v["uiName"],
             "summary": summarise(v["uiDesc"]),
             "description": describe(v),
             "tags": ["Specialist", "Subscribe", "Singleplayer"],
