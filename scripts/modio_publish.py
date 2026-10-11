@@ -29,6 +29,7 @@ import mimetypes
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 import zipfile
@@ -65,7 +66,16 @@ def token() -> str:
 
 def _req(method: str, path: str, *, fields=None, files=None):
     body, ctype = None, None
-    if fields or files:
+    if fields and not files:
+        # 🚨 mod.io rejects multipart on any endpoint that carries no file:
+        #   415 error_ref 13006, "Incorrect Content-Type header in request,
+        #   must be application/x-www-form-urlencoded"
+        # Creating a mod is multipart because the logo rides along; EDITING one
+        # has no file and must be urlencoded. Sending multipart to PUT /mods
+        # silently left a published mod on its original description.
+        body = urllib.parse.urlencode(fields).encode("utf-8")
+        ctype = "application/x-www-form-urlencoded"
+    elif fields or files:
         b = uuid.uuid4().hex
         ctype = f"multipart/form-data; boundary={b}"
         parts = []
@@ -224,7 +234,8 @@ def find_existing(name: str) -> dict | None:
     return None
 
 
-def publish(entry: dict, public: bool, dist: Path, media_only: bool = False) -> None:
+def publish(entry: dict, public: bool, dist: Path, media_only: bool = False,
+            version: str = "1.0", changelog: str = "Initial release.") -> None:
     existing = find_existing(entry["name"])
     if existing:
         mod_id = existing["id"]
@@ -260,9 +271,11 @@ def publish(entry: dict, public: bool, dist: Path, media_only: bool = False) -> 
         print(f"    created mod {mod_id} ({'public' if public else 'hidden'})")
     for suffix, modio_name in PLATFORM.items():
         z = Path(entry["zips"][suffix])
+        # Not hardcoded: re-uploading to an existing mod is not an initial
+        # release, and saying so in a public record is simply wrong.
         code, data = _req("POST", f"/games/{GAME_ID}/mods/{mod_id}/files",
-                          fields=[("version", "1.0"), ("active", "true"),
-                                  ("changelog", "Initial release."),
+                          fields=[("version", version), ("active", "true"),
+                                  ("changelog", changelog),
                                   ("platforms[]", modio_name)],
                           files=[("filedata", z)])
         ok = code in (200, 201)
@@ -280,6 +293,9 @@ def main() -> int:
     ap.add_argument("--only", action="append", help="limit to a pak stem, repeatable")
     ap.add_argument("--media-only", action="store_true",
                     help="attach screenshots to already-published mods and nothing else")
+    ap.add_argument("--version", default="1.0", help="modfile version string")
+    ap.add_argument("--changelog", default="Initial release.",
+                    help="per-file changelog; say what changed on a re-upload")
     ap.add_argument("--listings", default=None, metavar="DIR",
                     help="folder of authored <stem>.md listings. A pak with no "
                          "listing file is NOT published, so this folder is the "
@@ -333,7 +349,7 @@ def main() -> int:
         shots = e.get("screenshots", [])
         print(f"    screenshots {len(shots)}" + ("" if shots else "  (none in dist/screenshots/)"))
         if args.publish and not problems:
-            publish(e, args.public, dist, media_only=args.media_only)
+            publish(e, args.public, dist, args.media_only, args.version, args.changelog)
     if not args.publish:
         print(f"\n{'ready' if not problems else str(problems) + ' problems'}. "
               f"Add --publish to write. Nothing has been sent.")
