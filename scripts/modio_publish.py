@@ -221,16 +221,32 @@ def substitute_links(body: str, listings: Path) -> str:
            if not k.startswith("_")}
     donate = (cfg.get("DONATE") or "").strip()
     # Names a dollar on purpose. An open "support my work" leaves the reader
-    # deciding what the thing is worth, and most of them resolve that by
-    # closing the tab. A specific small number is easier to say yes to and is
-    # honest about the size of the ask.
+    # deciding what the thing is worth, and most resolve that by closing the
+    # tab. A specific small number is easier to say yes to.
+    #
+    # 🚨 Every count below was read off the mod.io API on 2026-10-11, not
+    # recalled. 177 public mods, 124 Vehicle New + 20 Vehicle Tweak. Do not
+    # edit these numbers from memory: one wrong count in a public listing
+    # invites the single comment that discredits everything else on the page.
     cfg["DONATE_SECTION"] = (
-        "## Support this\n\n"
-        "These mods are free and they stay free. No tiers, no membership, "
-        "nothing locked behind anything.\n\n"
-        f"If one of them saved you an afternoon, a dollar covers it: {donate}\n\n"
-        "The guide is free too, and writing down how any of this works took "
-        "considerably longer than building the mods did.\n"
+        "## Why this is worth a dollar\n\n"
+        "Expeditions has 177 public mods. **144 of them are vehicles.** Eleven "
+        "are maps. Three are base modules. Most of the custom specialists that "
+        "exist in this game are mine, and that is not a boast, it's the "
+        "problem.\n\n"
+        "It isn't that nobody wanted this stuff. Saber documented almost none "
+        "of how any of it works, then ended support in September 2026 without "
+        "ever filling the gap. Three years on, the community is still mostly "
+        "swapping trucks, because everything else took somebody weeks of "
+        "reverse engineering before a single file would even load.\n\n"
+        "These are the first of a run. More is coming, and **playable maps are "
+        "the big one**, which is also the slowest and hardest work this game "
+        "asks for.\n\n"
+        "I'm not a studio. Food and rent are what keep me in front of the PC "
+        "building this, and when they don't, none of it gets made. If you want "
+        f"the work to continue, a dollar genuinely moves it: {donate}\n\n"
+        "No tiers, no membership, nothing locked. Everything I make stays "
+        "free, including the guide that shows you how to do it yourself.\n"
     ) if donate else ""
     for key, value in cfg.items():
         body = body.replace("{{" + key + "}}", str(value))
