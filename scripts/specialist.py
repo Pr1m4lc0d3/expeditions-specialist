@@ -9,6 +9,8 @@ build or off his own working mods, and the load-bearing facts are marked.
 """
 from __future__ import annotations
 
+import difflib
+import functools
 import json
 import os
 import re
@@ -280,6 +282,111 @@ def modifier_fields(short_name: str, schema: str | Path | None = None) -> dict[s
     return out
 
 
+@functools.lru_cache(maxsize=1)
+def schema_members(schema: str | Path | None = None) -> dict[str, tuple[str, ...]]:
+    """modifier short name -> EVERY valid field name, descriptors included.
+
+    🚨 A field name the schema does not define is **silently ignored**. No error,
+    no warning, no placeholder: the ability line is simply not drawn and the
+    specialist is otherwise perfect. `modifier_fields` deliberately skips
+    descriptors, so it cannot catch this.
+
+    Saber's schema carries two typos that make the obvious spelling the wrong
+    one, and both have already cost real labels on this roster:
+
+        winchLenghtIncreasedMetersUiDesc        "Lenght"
+        additionalAddonFuelCountCountUiDesc     "CountCount"
+        additionalAddonWheelsCountCountUiDesc   "CountCount"
+        additionalAddonRepairsCountUiDesc       ...but repairs is spelled normally
+
+    Base types supply `group`, `overrideUiDesc` and `allSameUiDesc`, so the
+    `__type` chain is resolved rather than assumed.
+    """
+    path = schema or SCHEMA
+    if path is None:
+        snap = _snapshot().get("schema_members")
+        if snap is None:
+            raise RuntimeError("no schema and no schema_members in the snapshot")
+        return {k: tuple(v) for k, v in snap.items()}
+    text = Path(path).read_text(encoding="utf-8", errors="replace")
+
+    bodies: dict[str, str] = {}
+    for m in re.finditer(r"^(\w+)\s*=\s*\{", text, re.M):
+        i, depth = m.end(), 1
+        while depth and i < len(text):
+            depth += (text[i] == "{") - (text[i] == "}")
+            i += 1
+        bodies[m.group(1)] = text[m.end():i - 1]
+
+    def own(body: str) -> list[str]:
+        m = re.search(r"__members\s*=\s*\{", body)
+        if not m:
+            return []
+        i, depth = m.end(), 1
+        while depth and i < len(body):
+            depth += (body[i] == "{") - (body[i] == "}")
+            i += 1
+        # Names at depth 0 only. A named sub-block consumes its own brace and
+        # must still raise the depth; forgetting that drops half the members.
+        names, d = [], 0
+        for hit in re.finditer(r"(\w+)\s*=\s*\{|\{|\}", body[m.end():i - 1]):
+            if hit.group(0) == "}":
+                d -= 1
+            else:
+                if hit.group(1) and d == 0:
+                    names.append(hit.group(1))
+                d += 1
+        return names
+
+    base = {n: (re.search(r'__type\s*=\s*"([^"]+)"', b) or [None, ""])[1]
+            for n, b in bodies.items()}
+
+    def resolve(name: str, seen: tuple = ()) -> list[str]:
+        if name in seen or name not in bodies:
+            return []
+        return own(bodies[name]) + resolve(base.get(name, ""), seen + (name,))
+
+    skip = ("SpecialistModifierBase", "SpecialistModifierUiDesc",
+            "SpecialistModifierGroupUiDesc")
+    return {n[len("SpecialistModifier"):]: tuple(sorted(set(resolve(n))))
+            for n in bodies
+            if n.startswith("SpecialistModifier") and not n.startswith(skip)}
+
+
+#: added by the serialiser, not members of any schema block
+_SERIALISED = ("$type", "name")
+
+
+def desc_field(short_name: str, field: str) -> str | None:
+    """The schema's descriptor member for `field`, Saber's typos included.
+
+    Never build the name as `field + "UiDesc"`. That convention holds for most
+    modifiers and the exceptions are exactly where labels vanish.
+    """
+    members = schema_members().get(short_name, ())
+    exact = field + "UiDesc"
+    if exact in members:
+        return exact
+    cands = [m for m in members if m.endswith("UiDesc")
+             and m not in ("overrideUiDesc", "allSameUiDesc")]
+    best, score = None, 0.0
+    for m in cands:
+        r = difflib.SequenceMatcher(None, m[:-len("UiDesc")], field).ratio()
+        if r > score:
+            best, score = m, r
+    return best if score >= 0.85 else None
+
+
+def unknown_fields(modifier: dict) -> list[str]:
+    """Field names on one modifier that the schema does not define."""
+    short = modifier.get("$type", "").replace("SpecialistModifier", "")
+    allowed = schema_members().get(short)
+    if allowed is None:
+        return [f"{short}: not a schema modifier"]
+    return [f"{short}.{k}" for k in modifier
+            if k not in allowed and k not in _SERIALISED]
+
+
 def modifiers_in_use(mods_dir: str | Path) -> dict[str, list[str]]:
     """modifier short name -> the uiNames of the specialists holding it.
 
@@ -397,9 +504,16 @@ def display_problems(modifier: dict) -> list[str]:
         if not ok(modifier, nums):
             out.append(f"{short} will not render as written (observed on a card): {advice}")
         return out
+    out += [f"{f}: not a field the schema defines, so the game ignores it"
+            for f in unknown_fields(modifier)]
     if not (modifier.get("overrideUiDesc") or modifier.get("allSameUiDesc")):
         never = set((display_contract(short) or {}).get("never_labelled", []))
-        silent = [k for k in nums if modifier.get(k + "UiDesc") is None and k not in never]
+        # Ask the schema for the descriptor's name. Building it as field+"UiDesc"
+        # reported Tydewell's supply labels as missing when they were present
+        # under Saber's "CountCount" spelling, and the reverse error is worse:
+        # a label written to the assumed name is accepted here and never drawn.
+        silent = [k for k in nums if k not in never
+                  and modifier.get(desc_field(short, k) or k + "UiDesc") is None]
         if silent:
             out.append(f"no UiDesc on {silent}: those apply but may not show on the card")
     return out

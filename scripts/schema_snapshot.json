@@ -729,5 +729,369 @@
    "custom_desc": []
   }
  },
- "display_contract_note": "Derived from the 25 shipped specialists. mode override/allSame means ONE line for the whole modifier and its numeric fields carry no per-field label. never_labelled fields are deliberately not displayed. custom_desc is a descriptor field with a non-standard name. A modifier absent here is unused by vanilla and unproven."
+ "display_contract_note": "Derived from the 25 shipped specialists. mode override/allSame means ONE line for the whole modifier and its numeric fields carry no per-field label. never_labelled fields are deliberately not displayed. custom_desc is a descriptor field with a non-standard name. A modifier absent here is unused by vanilla and unproven.",
+ "schema_members": {
+  "AdditionalAddonSupplies": [
+   "additionalAddonFuelCount",
+   "additionalAddonFuelCountCountUiDesc",
+   "additionalAddonRepairsCount",
+   "additionalAddonRepairsCountUiDesc",
+   "additionalAddonWheelsCount",
+   "additionalAddonWheelsCountCountUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "AdditionalDeployResources": [
+   "additionalDeployFuelCount",
+   "additionalDeployFuelCountUiDesc",
+   "additionalDeployRepairsCount",
+   "additionalDeployRepairsCountUiDesc",
+   "additionalDeployWheelsCount",
+   "additionalDeployWheelsCountUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "AdditionalReward": [
+   "additionalRewardExpeditionIncreasedPercent",
+   "additionalRewardExpeditionIncreasedPercentUiDesc",
+   "additionalRewardSideQuestsIncreasedPercent",
+   "additionalRewardSideQuestsIncreasedPercentUiDesc",
+   "additionalRewardTasksIncreasedPercent",
+   "additionalRewardTasksIncreasedPercentUiDesc",
+   "allSameUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "AdditionalTreasureItems": [
+   "additionalItem",
+   "additionalTreasureItemsCount",
+   "additionalTreasureItemsCountUiDesc",
+   "group"
+  ],
+  "AirdropReroll": [
+   "airdropRerollCost",
+   "airdropRerollCostUiDesc",
+   "airdropRerollLootLists",
+   "group"
+  ],
+  "AnchorRadius": [
+   "anchorIDs",
+   "anchorRadiusIncreasedPercent",
+   "anchorRadiusIncreasedPercentUiDesc",
+   "group"
+  ],
+  "AnchorSupplies": [
+   "anchorIDs",
+   "anchorMaxLimitCount",
+   "anchorMaxLimitCountUiDesc",
+   "group"
+  ],
+  "ArmorCapacity": [
+   "allSameUiDesc",
+   "armorEngineIncreasedPercent",
+   "armorEngineIncreasedPercentUiDesc",
+   "armorGasTankIncreasedPercent",
+   "armorGasTankIncreasedPercentUiDesc",
+   "armorGearboxIncreasedPercent",
+   "armorGearboxIncreasedPercentUiDesc",
+   "armorSuspencionIncreasedPercent",
+   "armorSuspencionIncreasedPercentUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "ArmorRestoreEverywhere": [
+   "armorRestoreEverywhereUiDesc",
+   "group"
+  ],
+  "BinocularRadius": [
+   "allSameUiDesc",
+   "binocularFullRadiusIncreasedMeters",
+   "binocularFullRadiusIncreasedMetersUiDesc",
+   "binocularPartRadiusIncreasedMeters",
+   "binocularPartRadiusIncreasedMetersUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "DroneAcceleration": [
+   "allSameUiDesc",
+   "droneAccelerationHeightIncreasedPercent",
+   "droneAccelerationHeightIncreasedPercentUiDesc",
+   "droneAccelerationIncreasedPercent",
+   "droneAccelerationIncreasedPercentUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "DroneControllability": [
+   "allSameUiDesc",
+   "droneControllabilityForceRotationIncreasedPercent",
+   "droneControllabilityForceRotationIncreasedPercentUiDesc",
+   "droneControllabilityResForceIncreasedPercent",
+   "droneControllabilityResForceIncreasedPercentUiDesc",
+   "droneControllabilityResForceRotationIncreasedPercent",
+   "droneControllabilityResForceRotationIncreasedPercentUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "DroneDiscoverScoutZones": [
+   "droneDiscoverScoutZonesUiDesc",
+   "group"
+  ],
+  "DroneHeight": [
+   "droneHeightIncreasedMeters",
+   "droneHeightIncreasedMetersUiDesc",
+   "group"
+  ],
+  "DroneItemSetup": [
+   "droneItemSetupSettings",
+   "droneItemSetupUiDesc",
+   "group"
+  ],
+  "DroneMaxSpeed": [
+   "droneMaxSpeedIncreasedPercent",
+   "droneMaxSpeedIncreasedPercentUiDesc",
+   "group"
+  ],
+  "DroneRadius": [
+   "droneRadiusIncreasedMeters",
+   "droneRadiusIncreasedMetersUiDesc",
+   "group"
+  ],
+  "DroneScoutRadius": [
+   "allSameUiDesc",
+   "droneFullScoutRadiusIncreasedMeters",
+   "droneFullScoutRadiusIncreasedMetersUiDesc",
+   "dronePartScoutRadiusIncreasedMeters",
+   "dronePartScoutRadiusIncreasedMetersUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "DroneTrade": [
+   "droneTradeUiDesc",
+   "group"
+  ],
+  "EcholotModeAura": [
+   "allSameUiDesc",
+   "echolotApplicationAdditionalTime",
+   "echolotRadiusOverrideMeters",
+   "echolotRadiusOverrideMetersUiDesc",
+   "echolotStepCountOverride",
+   "echolotStepCountOverrideUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "EcholotModeCone": [
+   "echolotApplicationAdditionalTime",
+   "echolotConeAngle",
+   "echolotConeAngleUiDesc",
+   "echolotRadiusOverrideMeters",
+   "echolotRadiusOverrideMetersUiDesc",
+   "echolotStepCountOverride",
+   "echolotStepCountOverrideUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "EcholotModeSnow": [
+   "allSameUiDesc",
+   "echolotRadiusOverrideMeters",
+   "echolotRadiusOverrideMetersUiDesc",
+   "echolotStepCountOverride",
+   "echolotStepCountOverrideUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "ElectricityConsumption": [
+   "allSameUiDesc",
+   "group",
+   "metaldetectorElectricityConsumptionReducedPercent",
+   "metaldetectorElectricityConsumptionReducedPercentUiDesc",
+   "overrideUiDesc",
+   "radarElectricityConsumptionReducedPercent",
+   "radarElectricityConsumptionReducedPercentUiDesc",
+   "wheelDroneAbilityElectricityConsumptionReducedPercent",
+   "wheelDroneAbilityElectricityConsumptionReducedPercentUiDesc",
+   "wheelDroneElectricityConsumptionReducedPercent",
+   "wheelDroneElectricityConsumptionReducedPercentUiDesc"
+  ],
+  "EmergencyStockSupplies": [
+   "allSameUiDesc",
+   "emergencyStockFuel",
+   "emergencyStockFuelUiDesc",
+   "emergencyStockRepairs",
+   "emergencyStockRepairsUiDesc",
+   "emergencyStockWheels",
+   "emergencyStockWheelsUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "EmergencyWinch": [
+   "allSameUiDesc",
+   "emergencyWinchFuelUiDesc",
+   "group",
+   "overrideUiDesc",
+   "winchFuelPerMinute"
+  ],
+  "EngineUnderwaterDamage": [
+   "engineUnderwaterDamageReducedPercent",
+   "engineUnderwaterDamageReducedPercentUiDesc",
+   "group"
+  ],
+  "FogOfWarTranspRadius": [
+   "allSameUiDesc",
+   "fogOfWarRadiusInceasedMeters",
+   "fogOfWarRadiusInceasedMetersUiDesc",
+   "fogOfWarTranspRadiusInceasedMeters",
+   "fogOfWarTranspRadiusInceasedMetersUiDesc",
+   "group",
+   "overrideUiDesc"
+  ],
+  "FreeEvacuation": [
+   "freeEvacuationMaxLimitCount",
+   "freeEvacuationMaxLimitCountUiDesc",
+   "group"
+  ],
+  "FuelConsumption": [
+   "fuelConsumpionReducedPercent",
+   "fuelConsumpionReducedPercentUiDesc",
+   "group"
+  ],
+  "GuaranteedAirdropResource": [
+   "group",
+   "guarantedAirdropFuelCount",
+   "guarantedAirdropFuelCountUiDesc",
+   "guarantedAirdropRepairCount",
+   "guarantedAirdropRepairCountUiDesc",
+   "guarantedAirdropWheelCount",
+   "guarantedAirdropWheelCountUiDesc",
+   "overrideUiDesc"
+  ],
+  "ImproveWinchedTruck": [
+   "allSameUiDesc",
+   "bodyFrictionAsphaltIncreasedPercent",
+   "bodyFrictionIncreasedPercent",
+   "engineResponsivenessIncreasedPercent",
+   "fuelConsumptionReducedPercent",
+   "group",
+   "onModelFrictionIncreasedPercent",
+   "overrideUiDesc",
+   "substanceFrictionIncreasedPercent",
+   "torqueIncreasedPercent"
+  ],
+  "Info": [],
+  "ItemCost": [
+   "group",
+   "itemCostReducedPercent",
+   "itemCostReducedPercentUiDesc"
+  ],
+  "ItemSellPrice": [
+   "group",
+   "itemSellPriceIncreasedPercent",
+   "itemSellPriceIncreasedPercentUiDesc"
+  ],
+  "JackscrewSupplies": [
+   "group",
+   "jackscrewMaxLimitCount",
+   "jackscrewMaxLimitCountUiDesc"
+  ],
+  "MayDiscoverZones": [
+   "allSameUiDesc",
+   "group",
+   "mayDiscoverZonesByBinocular",
+   "mayDiscoverZonesByBinocularUiDesc",
+   "mayDiscoverZonesByDrone",
+   "mayDiscoverZonesByDroneUiDesc",
+   "overrideUiDesc"
+  ],
+  "RepairBuildingConsumption": [
+   "group",
+   "repairBuildingConsumptionDesc",
+   "repairBuildingConsumptionReducedPercent"
+  ],
+  "RepairConsumption": [
+   "group",
+   "repairConsumpionReducedPercent",
+   "repairConsumpionReducedPercentUiDesc"
+  ],
+  "TreasureItemSellPrice": [
+   "group",
+   "treasureItemSellPriceIncreasedPercent",
+   "treasureItemSellPriceIncreasedPercentUiDesc"
+  ],
+  "TruckDamage": [
+   "allSameUiDesc",
+   "group",
+   "overrideUiDesc",
+   "truckDamageEngineReducedPercent",
+   "truckDamageEngineReducedPercentUiDesc",
+   "truckDamageGasTankReducedPercent",
+   "truckDamageGasTankReducedPercentUiDesc",
+   "truckDamageGearboxReducedPercent",
+   "truckDamageGearboxReducedPercentUiDesc",
+   "truckDamageSuspensionReducedPercent",
+   "truckDamageSuspensionReducedPercentUiDesc",
+   "truckDamageWheelReducedPercent",
+   "truckDamageWheelReducedPercentUiDesc"
+  ],
+  "UnderwaterAnchorSetup": [
+   "group",
+   "underwaterAnchorSetupUiDesc"
+  ],
+  "ValueType": [],
+  "WheelDroneArmor": [
+   "allSameUiDesc",
+   "group",
+   "overrideUiDesc",
+   "wheelDroneArmorBatteryIncreasedPercent",
+   "wheelDroneArmorBatteryIncreasedPercentUiDesc",
+   "wheelDroneArmorEngineIncreasedPercent",
+   "wheelDroneArmorEngineIncreasedPercentUiDesc",
+   "wheelDroneArmorSuspencionIncreasedPercent",
+   "wheelDroneArmorSuspencionIncreasedPercentUiDesc"
+  ],
+  "WheelDroneArmorRestoreEverywhere": [
+   "group",
+   "wheelDroneArmorRestoreEverywhereUiDesc"
+  ],
+  "WheelDroneFriction": [
+   "group",
+   "overrideUiDesc",
+   "wheelDroneBodyFrictionAsphaltIncreasedPercent",
+   "wheelDroneBodyFrictionAsphaltIncreasedPercentUiDesc",
+   "wheelDroneBodyFrictionIncreasedPercent",
+   "wheelDroneBodyFrictionIncreasedPercentUiDesc",
+   "wheelDroneOnModelFrictionIncreasedPercent",
+   "wheelDroneOnModelFrictionIncreasedPercentUiDesc",
+   "wheelDroneSubstanceFrictionIncreasedPercent",
+   "wheelDroneSubstanceFrictionIncreasedPercentUiDesc"
+  ],
+  "WheelDroneScoutRadius": [
+   "allSameUiDesc",
+   "group",
+   "overrideUiDesc",
+   "wheelDroneFullScoutRadiusIncreasedMeters",
+   "wheelDroneFullScoutRadiusIncreasedMetersUiDesc",
+   "wheelDronePartScoutRadiusIncreasedMeters",
+   "wheelDronePartScoutRadiusIncreasedMetersUiDesc"
+  ],
+  "WheelDroneTorque": [
+   "group",
+   "wheelDroneTorqueIncreasedPercent",
+   "wheelDroneTorqueIncreasedPercentUiDesc"
+  ],
+  "WheelDroneZone": [
+   "allSameUiDesc",
+   "group",
+   "overrideUiDesc",
+   "wheelDroneZoneIncreasedPercent",
+   "wheelDroneZoneIncreasedPercentUiDesc"
+  ],
+  "WinchImprove": [
+   "group",
+   "overrideUiDesc",
+   "winchLenghtIncreasedMetersUiDesc",
+   "winchLengthIncreasedMeters",
+   "winchPowerIncreasedPercent",
+   "winchPowerIncreasedPercentUiDesc"
+  ]
+ },
+ "schema_members_note": "Every valid field name per modifier, base chain resolved. A name absent here is SILENTLY IGNORED by the game: no error, the ability line is just not drawn. Saber misspelled three descriptor members, so the obvious spelling is the broken one: winchLenghtIncreasedMetersUiDesc ('Lenght'), and additionalAddon{Fuel,Wheels}CountCountUiDesc ('CountCount', though repairs is spelled normally). Never build a descriptor name as field + 'UiDesc'; ask specialist.desc_field()."
 }

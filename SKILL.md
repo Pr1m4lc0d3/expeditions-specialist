@@ -212,12 +212,33 @@ team doing the same job as an existing pair.
 **Name people, not equipment.** Names built from the job read as catalogue parts.
 The ones that work are plausible names where the pun is phonetic and incidental.
 
+## When an ability does not show on the card
+
+`references/display.md`. It applies in a run and the hire screen draws nothing.
+No error, no placeholder, so a missing label looks exactly like an ability you
+forgot to add.
+
+🚨 **Never build a descriptor name as `field + "UiDesc"`.** Saber misspelled three
+of them, so the correct spelling is the broken one and the game discards it in
+silence. `winchLenghtIncreasedMetersUiDesc` really is "Lenght", and fuel and
+wheels double the word `Count` while repairs does not. Ask the schema:
+
+```
+python scripts/schema_members.py --check       # scan installed specialists
+sp.desc_field("AdditionalAddonSupplies", "additionalAddonFuelCount")
+```
+
+A sweep of thirteen specialists found 21 invented field names, three carrying
+label text that had never been drawn once.
+
 ## Files
 
 | Path | What |
 |---|---|
 | `scripts/specialist.py` | the engine: pak read/write, descriptor, modifiers, checks |
 | `scripts/specialist_doctor.py` | environment report plus a full defect scan |
+| `scripts/schema_members.py` | valid field names per modifier; `--check` scans the roster |
+| `references/display.md` | the three reasons an ability renders nothing |
 | `scripts/build_specialist_art.py` | portrait to three textures |
 | `scripts/clone_specialist.py` | new specialist from an existing pak |
 | `scripts/set_specialist_stats.py` | abilities, cost, lock state, from a JSON design |
