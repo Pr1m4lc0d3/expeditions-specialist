@@ -220,11 +220,17 @@ def substitute_links(body: str, listings: Path) -> str:
     cfg = {k: v for k, v in json.loads(cfg_path.read_text(encoding="utf-8")).items()
            if not k.startswith("_")}
     donate = (cfg.get("DONATE") or "").strip()
+    # Names a dollar on purpose. An open "support my work" leaves the reader
+    # deciding what the thing is worth, and most of them resolve that by
+    # closing the tab. A specific small number is easier to say yes to and is
+    # honest about the size of the ask.
     cfg["DONATE_SECTION"] = (
         "## Support this\n\n"
-        "These mods are free and they stay free. Writing down how any of this "
-        f"works took considerably longer than building the mods did. If it saved "
-        f"you an afternoon, you can put something in the hat here:\n\n{donate}\n"
+        "These mods are free and they stay free. No tiers, no membership, "
+        "nothing locked behind anything.\n\n"
+        f"If one of them saved you an afternoon, a dollar covers it: {donate}\n\n"
+        "The guide is free too, and writing down how any of this works took "
+        "considerably longer than building the mods did.\n"
     ) if donate else ""
     for key, value in cfg.items():
         body = body.replace("{{" + key + "}}", str(value))

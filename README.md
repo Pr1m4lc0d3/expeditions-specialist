@@ -102,6 +102,16 @@ of modifiers that refuse per-field labels is three entries long and marked as
 observations, not a rule, because an earlier version inferred a rule and flagged
 a dozen working abilities as broken.
 
+## Support this
+
+Free, and it stays free. No tiers, no membership, nothing locked.
+
+Saber documented almost none of this and then ended support for the game, so
+every page here was worked out by reading the schema and testing against the
+shipped build. That took considerably longer than building the mods it came
+from. If it saved you an afternoon, a dollar covers it:
+**https://ko-fi.com/ryanheltemes**
+
 ## Licence
 
 MIT. See `LICENSE`.
