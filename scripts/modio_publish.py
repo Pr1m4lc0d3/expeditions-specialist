@@ -27,6 +27,7 @@ import argparse
 import json
 import mimetypes
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -200,9 +201,34 @@ def read_listing(stem: str, listings: Path) -> tuple[str, str] | None:
     tail = listings / "_tail.md"
     if tail.is_file():
         body = body.rstrip() + "\n\n" + tail.read_text(encoding="utf-8")
+    body = substitute_links(body, listings)
     # HTML, not markdown. mod.io converts nothing, so markdown ships as literal
     # '##' and raw table pipes on the public page. See modio_markdown.
     return summary, md_to_html(body.strip())
+
+
+def substitute_links(body: str, listings: Path) -> str:
+    """Expand {{NAME}} from links.json. One edit there updates every listing.
+
+    An EMPTY value drops its section instead of publishing a dead link. A
+    placeholder URL on six public pages is worse than no link at all, so there
+    is no default and no example.com fallback.
+    """
+    cfg_path = listings / "links.json"
+    if not cfg_path.is_file():
+        return body
+    cfg = {k: v for k, v in json.loads(cfg_path.read_text(encoding="utf-8")).items()
+           if not k.startswith("_")}
+    donate = (cfg.get("DONATE") or "").strip()
+    cfg["DONATE_SECTION"] = (
+        "## Support this\n\n"
+        "These mods are free and they stay free. Writing down how any of this "
+        f"works took considerably longer than building the mods did. If it saved "
+        f"you an afternoon, you can put something in the hat here:\n\n{donate}\n"
+    ) if donate else ""
+    for key, value in cfg.items():
+        body = body.replace("{{" + key + "}}", str(value))
+    return re.sub(r"\n{3,}", "\n\n", body)
 
 
 def build_manifest(paks: list[Path], dist: Path, listings: Path | None = None) -> list[dict]:
