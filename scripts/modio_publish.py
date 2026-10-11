@@ -224,24 +224,32 @@ def substitute_links(body: str, listings: Path) -> str:
     # deciding what the thing is worth, and most resolve that by closing the
     # tab. A specific small number is easier to say yes to.
     #
-    # 🚨 Every count below was read off the mod.io API on 2026-10-11, not
-    # recalled. 177 public mods, 124 Vehicle New + 20 Vehicle Tweak. Do not
-    # edit these numbers from memory: one wrong count in a public listing
-    # invites the single comment that discredits everything else on the page.
+    # 🚨 Every count below was read off the mod.io API on 2026-10-11 AND each
+    # tagged mod was opened to see what it actually is. That second step is the
+    # one that matters: the tags lie. "Base Module" returns three mods, two of
+    # which are interior bobbleheads and one a winch tweak. "Specialist"
+    # returns three, one of which removes mission edge outlines. "Map" returns
+    # eleven, one of which is a community fix mod. Counting the tag and
+    # publishing the result would have put four wrong numbers on six public
+    # pages. Do not edit these from memory, and do not re-derive them from a
+    # tag count.
     cfg["DONATE_SECTION"] = (
         "## Why this is worth a dollar\n\n"
-        "Expeditions has 177 public mods. **144 of them are vehicles.** Eleven "
-        "are maps. Three are base modules. Most of the custom specialists that "
-        "exist in this game are mine, and that is not a boast, it's the "
-        "problem.\n\n"
+        "Expeditions has 177 public mods. **144 of them are vehicles.** Ten are "
+        "playable maps. Two are specialists made by somebody other than me. And "
+        "the number of real custom base modules is **zero**: the three the site "
+        "files that way are two interior bobbleheads and a winch tweak.\n\n"
         "It isn't that nobody wanted this stuff. Saber documented almost none "
         "of how any of it works, then ended support in September 2026 without "
         "ever filling the gap. Three years on, the community is still mostly "
-        "swapping trucks, because everything else took somebody weeks of "
-        "reverse engineering before a single file would even load.\n\n"
+        "swapping trucks, because everything else takes weeks of reverse "
+        "engineering before a single file will even load. I did that work, and "
+        "the guide linked above is me giving it away.\n\n"
         "These are the first of a run. More is coming, and **playable maps are "
-        "the big one**, which is also the slowest and hardest work this game "
-        "asks for.\n\n"
+        "the big one**: the slowest, hardest thing this game asks for, and the "
+        "thing people actually want. The most downloaded mod on Expeditions is "
+        "a map, at over 250,000 installs. Nothing that isn't a map comes close."
+        "\n\n"
         "I'm not a studio. Food and rent are what keep me in front of the PC "
         "building this, and when they don't, none of it gets made. If you want "
         f"the work to continue, a dollar genuinely moves it: {donate}\n\n"
