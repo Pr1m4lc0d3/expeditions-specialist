@@ -176,7 +176,8 @@ def upload_media(mod_id: int, shots: list[str], dist: Path) -> None:
           f"{'' if ok else ' ' + json.dumps(data)[:200]}")
 
 
-def read_listing(stem: str, listings: Path) -> tuple[str, str] | None:
+def read_listing(stem: str, listings: Path,
+                 tail_name: str | None = None) -> tuple[str, str] | None:
     """Authored summary and description for one pak stem, or None if absent.
 
     `<stem>.md` carries a `summary:` front-matter line and a markdown body. The
@@ -198,7 +199,13 @@ def read_listing(stem: str, listings: Path) -> tuple[str, str] | None:
         for line in front.splitlines():
             if line.strip().startswith("summary:"):
                 summary = line.split(":", 1)[1].strip()
-    tail = listings / "_tail.md"
+            elif line.strip().startswith("tail:"):
+                tail_name = line.split(":", 1)[1].strip()
+    # A listing may name its own tail in front matter. The default tail is
+    # written for a specialist page; appending it to anything else duplicates
+    # whole sections, which is how the tools listing came out at 9,895 chars
+    # with the porter pitch in it twice.
+    tail = listings / (tail_name or "_tail.md")
     if tail.is_file():
         body = body.rstrip() + "\n\n" + tail.read_text(encoding="utf-8")
     body = substitute_links(body, listings)
