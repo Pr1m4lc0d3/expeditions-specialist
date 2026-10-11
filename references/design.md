@@ -40,6 +40,40 @@ one ends on a warning about your wallet, another on a remark about strange radio
 frequencies. The player should meet the drawback in the story before they find it
 in the numbers.
 
+## The additive third
+
+A pair is not the only working shape. One specialist on the shipped roster is a
+dog, and a dog does not trade a capability away to buy another one, so the mirror
+above is wrong for him. He carries **no handicap at all** and still is not
+overpowered, because of what he touches rather than how much.
+
+```
+Scout   droneAccelerationIncreasedPercent      +150   air drone team
+        wheelDroneZoneIncreasedPercent         +125   ground drone team
+        winchLengthIncreasedMeters              +40   recovery team
+        additionalRewardTasksIncreasedPercent   +50   economy team
+```
+
+Four contributions, one per team, and **not one of them is a field any tuned pair
+shares**. Every 2.5x net stays exactly where it was set. That is the condition
+that lets a third character join any team without being balanced against it, and
+it is mechanically checkable: intersect his numeric fields with both halves of
+every pair and require the result to be empty.
+
+Two things make the slot findable:
+
+- **Prefer a modifier the roster does not use.** `AdditionalReward` was held by
+  nobody, so it cost nothing to claim.
+- **A pair's unmirrored stat can be moved.** Nom Nom held `DroneAcceleration`
+  against no opposite number, so handing it to Scout left the air-drone net
+  untouched and dropped Nom Nom from nine abilities to eight.
+
+⚠ **Check the display contract before claiming an unused modifier.**
+`DroneDiscoverScoutZones` looked like the obvious dog ability and is absent from
+`display_contract` entirely, which means no vanilla specialist exercises it and
+neither its rendering nor its behaviour has ever been observed. Unused is not the
+same as free.
+
 ## Name people, not equipment
 
 Names assembled from the job read as catalogue parts. Snatchblock, Gusset,
