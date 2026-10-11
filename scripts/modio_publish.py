@@ -37,6 +37,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import specialist as sp  # noqa: E402
+from modio_markdown import md_to_html  # noqa: E402
 
 GAME_ID = 5734                      # Expeditions: A MudRunner Game
 API = "https://api.mod.io/v1"
@@ -199,7 +200,9 @@ def read_listing(stem: str, listings: Path) -> tuple[str, str] | None:
     tail = listings / "_tail.md"
     if tail.is_file():
         body = body.rstrip() + "\n\n" + tail.read_text(encoding="utf-8")
-    return summary, body.strip()
+    # HTML, not markdown. mod.io converts nothing, so markdown ships as literal
+    # '##' and raw table pipes on the public page. See modio_markdown.
+    return summary, md_to_html(body.strip())
 
 
 def build_manifest(paks: list[Path], dist: Path, listings: Path | None = None) -> list[dict]:
