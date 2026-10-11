@@ -8,9 +8,9 @@ from the source descriptor, so the clone is the same specialist wearing a
 different face.
 
     python clone_specialist.py \
-        --source "<Mods>\\SpecialistDesc_Emergency Response Unit.pak" \
-        --id Doc_Windsor_Ryan --ui-name "Daladim" --prefix ryan \
-        --bage ryan_bage.png --bg ryan_bg.png --bgsmall ryan_bgsmall.png
+        --source "<Mods>\\SpecialistDesc_Treadwell.pak" \
+        --id Marlon_Kitt --ui-name "Marlon Kitt" --prefix kitt \
+        --bage kitt_bage.png --bg kitt_bg.png --bgsmall kitt_bgsmall.png
 
 Notes that matter (learned the hard way, see the memory vault):
   - The canonical descriptor inside a pak is the EXTENSIONLESS `SpecialistDesc`
@@ -56,7 +56,7 @@ def main() -> int:
                     help="descriptor `name` and the pak filename suffix")
     ap.add_argument("--ui-name", required=True, help="max 20 characters")
     ap.add_argument("--prefix", required=True,
-                    help="texture name stem, e.g. `ryan` -> ryan_bage / ryan_bg / ryan_bgsmall")
+                    help="texture name stem, e.g. `kitt` -> kitt_bage / kitt_bg / kitt_bgsmall")
     ap.add_argument("--bage", required=True)
     ap.add_argument("--bg", required=True)
     ap.add_argument("--bgsmall", required=True)
