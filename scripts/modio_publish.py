@@ -240,31 +240,21 @@ def substitute_links(body: str, listings: Path) -> str:
     # publishing the result would have put four wrong numbers on six public
     # pages. Do not edit these from memory, and do not re-derive them from a
     # tag count.
+    # The ARGUMENT lives in the listing's own tail, where it can be edited
+    # without touching code. This generates only the ASK, so a change of
+    # donation host is one line in links.json.
     cfg["DONATE_SECTION"] = (
-        "## Why this is worth a dollar\n\n"
-        "Expeditions has 177 public mods. **144 of them are vehicles.** Ten are "
-        "playable maps. And the number of real custom base modules is "
-        "**zero**.\n\n"
-        "Not zero-ish. The site files three mods under Base Module: two are "
-        "interior bobbleheads and one is a winch tweak. It files a specialist "
-        "that turns out to be a UI change. Counting the categories overstates "
-        "what is actually there, every time, in the same direction.\n\n"
-        "It isn't that nobody wanted this stuff. Saber documented almost none "
-        "of how any of it works, then ended support in September 2026 without "
-        "ever filling the gap. Three years on, the community is still mostly "
-        "swapping trucks, because everything else takes weeks of reverse "
-        "engineering before a single file will even load. I did that work, and "
-        "the guide linked above is me giving it away.\n\n"
+        "## Support this\n\n"
         "These are the first of a run. More is coming, and **playable maps are "
         "the big one**: the slowest, hardest thing this game asks for, and the "
         "thing people actually want. The most downloaded mod on Expeditions is "
-        "a map, at over 250,000 installs. Nothing that isn't a map comes close."
-        "\n\n"
+        "a map, at over 250,000 installs. Nothing that isn't a map comes "
+        "close.\n\n"
         "I'm not a studio. Food and rent are what keep me in front of the PC "
         "building this, and when they don't, none of it gets made. If you want "
         f"the work to continue, a dollar genuinely moves it: {donate}\n\n"
         "No tiers, no membership, nothing locked. Everything I make stays "
-        "free, including the guide that shows you how to do it yourself.\n"
+        "free, including the guides that show you how to do it yourself.\n"
     ) if donate else ""
     for key, value in cfg.items():
         body = body.replace("{{" + key + "}}", str(value))
