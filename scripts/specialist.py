@@ -519,9 +519,29 @@ def display_problems(modifier: dict) -> list[str]:
     return out
 
 
-def ui_desc(text: str, value_prefix: str = " +", icon30: str = "", hidden: bool = False) -> dict:
-    return {"$type": "SpecialistModifierUiDesc", "hidden": hidden, "icon30": icon30,
-            "text": text, "valuePrefix": value_prefix, "valueType": 0}
+def ui_desc(text: str, value_prefix: str | None = " +", icon30: str = "",
+            hidden: bool = False) -> dict:
+    """A descriptor line. Pass `value_prefix=None` for one that shows NO number.
+
+    🚨 **An empty string is NOT "no value", it is "a value with no prefix".**
+    `valuePrefix: ""` leaves the game in append-a-value mode, so it prints its
+    own separator and then whatever it finds. Observed on his cards:
+
+        Empowers the vehicle in tow,null     ImproveWinchedTruck, override
+        Drone armor repairs anywhere,        a flag with no numeric field
+
+    Vanilla writes neither `valuePrefix` nor `valueType` when there is nothing
+    to show. `SpecialistModifierArmorRestoreEverywhere` in `initial.cache_block`
+    is literally `{ __type = ... }`, and the winch override is just
+    `{ text = "SPEC_MODS_WINCHED_BUFF" }`. So None omits both fields rather
+    than writing an empty one.
+    """
+    d = {"$type": "SpecialistModifierUiDesc", "hidden": hidden,
+         "icon30": icon30, "text": text}
+    if value_prefix is not None:
+        d["valuePrefix"] = value_prefix
+        d["valueType"] = 0
+    return d
 
 
 def group(text: str, icon36: str) -> dict:

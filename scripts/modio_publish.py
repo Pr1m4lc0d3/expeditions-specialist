@@ -162,10 +162,35 @@ def prepare_image(src: Path, out_dir: Path) -> Path:
     return dest
 
 
-def upload_media(mod_id: int, shots: list[str], dist: Path) -> None:
+def existing_media(mod_id: int) -> list[str]:
+    code, data = _req("GET", f"/games/{GAME_ID}/mods/{mod_id}")
+    if code != 200:
+        return []
+    return [i.get("filename", "") for i in ((data.get("media") or {}).get("images") or [])]
+
+
+def upload_media(mod_id: int, shots: list[str], dist: Path, replace: bool = False) -> None:
+    """Attach screenshots. 🚨 mod.io APPENDS: it never replaces.
+
+    Every `--publish` used to re-send the same files, so one specialist
+    accumulated **eleven copies of the same screenshot** across a day of
+    re-pushes, all of them showing stat values that three rebalances had since
+    changed. Uploading is now skipped when the mod already has images, and
+    `replace` clears them first so a stale set can actually be swapped out.
+    """
     if not shots:
         print("      no screenshots found; see dist/screenshots/")
         return
+    already = existing_media(mod_id)
+    if already and not replace:
+        print(f"      media       {len(already)} already attached, skipping "
+              f"(pass --replace-media to swap them)")
+        return
+    if already and replace:
+        code, _ = _req("DELETE", f"/games/{GAME_ID}/mods/{mod_id}/media",
+                       fields=[("images[]", n) for n in already])
+        print(f"      media       cleared {len(already)} old "
+              f"{'ok' if code in (200, 204) else 'FAILED ' + str(code)}")
     prepared = [prepare_image(Path(s), dist / "_media") for s in shots[:10]]
     files = [(f"image{i+1}", p) for i, p in enumerate(prepared)]
     code, data = _req("POST", f"/games/{GAME_ID}/mods/{mod_id}/media", files=files)
@@ -294,13 +319,14 @@ def find_existing(name: str) -> dict | None:
 
 
 def publish(entry: dict, public: bool, dist: Path, media_only: bool = False,
-            version: str = "1.0", changelog: str = "Initial release.") -> None:
+            version: str = "1.0", changelog: str = "Initial release.",
+            replace_media: bool = False) -> None:
     existing = find_existing(entry["name"])
     if existing:
         mod_id = existing["id"]
         print(f"    exists as mod {mod_id}" + (", media only" if media_only else ""))
         if media_only:
-            upload_media(mod_id, entry.get("screenshots", []), dist)
+            upload_media(mod_id, entry.get("screenshots", []), dist, replace_media)
             return
         # Creating a mod sends the text; adding a FILE does not. Without this an
         # existing mod keeps whatever description it was created with, so a
@@ -340,7 +366,7 @@ def publish(entry: dict, public: bool, dist: Path, media_only: bool = False,
         ok = code in (200, 201)
         print(f"      {modio_name:12s} {'ok' if ok else 'FAILED ' + str(code)}"
               f"{'' if ok else ' ' + json.dumps(data)[:200]}")
-    upload_media(mod_id, entry.get("screenshots", []), dist)
+    upload_media(mod_id, entry.get("screenshots", []), dist, replace_media)
 
 
 def main() -> int:
@@ -350,6 +376,9 @@ def main() -> int:
     ap.add_argument("--publish", action="store_true", help="actually write to mod.io")
     ap.add_argument("--public", action="store_true", help="create visible instead of hidden")
     ap.add_argument("--only", action="append", help="limit to a pak stem, repeatable")
+    ap.add_argument("--replace-media", action="store_true",
+                    help="clear existing screenshots before uploading; mod.io "
+                         "appends otherwise and duplicates pile up")
     ap.add_argument("--media-only", action="store_true",
                     help="attach screenshots to already-published mods and nothing else")
     ap.add_argument("--version", default="1.0", help="modfile version string")
@@ -408,7 +437,8 @@ def main() -> int:
         shots = e.get("screenshots", [])
         print(f"    screenshots {len(shots)}" + ("" if shots else "  (none in dist/screenshots/)"))
         if args.publish and not problems:
-            publish(e, args.public, dist, args.media_only, args.version, args.changelog)
+            publish(e, args.public, dist, args.media_only, args.version,
+                args.changelog, args.replace_media)
     if not args.publish:
         print(f"\n{'ready' if not problems else str(problems) + ' problems'}. "
               f"Add --publish to write. Nothing has been sent.")
