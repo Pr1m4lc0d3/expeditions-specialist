@@ -164,16 +164,48 @@ def upload_media(mod_id: int, shots: list[str], dist: Path) -> None:
           f"{'' if ok else ' ' + json.dumps(data)[:200]}")
 
 
-def build_manifest(paks: list[Path], dist: Path) -> list[dict]:
+def read_listing(stem: str, listings: Path) -> tuple[str, str] | None:
+    """Authored summary and description for one pak stem, or None if absent.
+
+    `<stem>.md` carries a `summary:` front-matter line and a markdown body. The
+    body is followed by `_tail.md`, which holds whatever every listing shares.
+
+    🚨 **A pak with no listing file does not publish.** That is deliberate: the
+    directory is the allow-list. Globbing the mods folder instead would sweep in
+    specialists the author never meant to upload, and on mod.io that mistake is
+    public before you notice it.
+    """
+    f = listings / f"{stem}.md"
+    if not f.is_file():
+        return None
+    text = f.read_text(encoding="utf-8")
+    summary, body = "", text
+    if text.startswith("---"):
+        end = text.index("\n---", 3)
+        front, body = text[3:end], text[end + 4:]
+        for line in front.splitlines():
+            if line.strip().startswith("summary:"):
+                summary = line.split(":", 1)[1].strip()
+    tail = listings / "_tail.md"
+    if tail.is_file():
+        body = body.rstrip() + "\n\n" + tail.read_text(encoding="utf-8")
+    return summary, body.strip()
+
+
+def build_manifest(paks: list[Path], dist: Path, listings: Path | None = None) -> list[dict]:
     out = []
     for pak in paks:
         v = sp.read_descriptor(pak)["SslValue"]
         zips = {plat: dist / f"{pak.stem}_{plat}.zip" for plat in PLATFORM}
+        authored = read_listing(pak.stem[len("SpecialistDesc_"):], listings) if listings else None
+        if listings and authored is None:
+            print(f"  skipped {pak.stem}: no listing file, so it is not cleared to publish")
+            continue
         out.append({
             "pak": str(pak),
             "name": v["uiName"],
-            "summary": summarise(v["uiDesc"]),
-            "description": describe(v),
+            "summary": authored[0] if authored else summarise(v["uiDesc"]),
+            "description": authored[1] if authored else describe(v),
             "tags": ["Specialist", "Subscribe", "Singleplayer"],
             "logo": str(dist / "logos" / (pak.stem + ".png")),
             "zips": {p: str(z) for p, z in zips.items()},
@@ -196,10 +228,19 @@ def publish(entry: dict, public: bool, dist: Path, media_only: bool = False) -> 
     existing = find_existing(entry["name"])
     if existing:
         mod_id = existing["id"]
-        print(f"    exists as mod {mod_id}" + (", media only" if media_only else ", adding files only"))
+        print(f"    exists as mod {mod_id}" + (", media only" if media_only else ""))
         if media_only:
             upload_media(mod_id, entry.get("screenshots", []), dist)
             return
+        # Creating a mod sends the text; adding a FILE does not. Without this an
+        # existing mod keeps whatever description it was created with, so a
+        # rewritten listing would never reach the page it was written for.
+        code, data = _req("PUT", f"/games/{GAME_ID}/mods/{mod_id}",
+                          fields=[("name", entry["name"]),
+                                  ("summary", entry["summary"]),
+                                  ("description", entry["description"])])
+        print(f"      text        {'updated' if code in (200, 201) else 'FAILED ' + str(code)}"
+              f"{'' if code in (200, 201) else ' ' + json.dumps(data)[:200]}")
     elif media_only:
         print("    not published yet, nothing to attach media to")
         return
@@ -239,13 +280,23 @@ def main() -> int:
     ap.add_argument("--only", action="append", help="limit to a pak stem, repeatable")
     ap.add_argument("--media-only", action="store_true",
                     help="attach screenshots to already-published mods and nothing else")
+    ap.add_argument("--listings", default=None, metavar="DIR",
+                    help="folder of authored <stem>.md listings. A pak with no "
+                         "listing file is NOT published, so this folder is the "
+                         "allow-list. Strongly recommended.")
     args = ap.parse_args()
 
     dist = Path(__file__).parent.parent / "dist"
+    listings = Path(args.listings) if args.listings else None
+    if listings and not listings.is_dir():
+        return print(f"no such listings folder: {listings}") or 1
     mf_path = dist / "modio_manifest.json"
     if args.manifest or not mf_path.is_file():
         paks = [p for p in sorted(sp.mods_dir().glob("SpecialistDesc_*.pak")) if p.stat().st_size]
-        mf = build_manifest(paks, dist)
+        if not listings:
+            print("⚠ no --listings given, so EVERY installed specialist is in the plan.\n"
+                  "  Pass --listings to publish only the ones you have written copy for.")
+        mf = build_manifest(paks, dist, listings)
         dist.mkdir(parents=True, exist_ok=True)
         mf_path.write_text(json.dumps(mf, indent=2), encoding="utf-8")
         print(f"manifest written: {mf_path}  ({len(mf)} specialists)")

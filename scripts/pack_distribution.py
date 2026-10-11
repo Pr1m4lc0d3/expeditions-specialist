@@ -106,9 +106,9 @@ def main() -> int:
     paks = [Path(p) for p in args.pak]
     if args.all:
         paks += [p for p in sorted(sp.mods_dir().glob("SpecialistDesc_*.pak")) if p.stat().st_size]
-    if not paks:
-        ap.error("give one or more .pak paths, or --all")
 
+    # --verify reads the zips already in `out`, so it needs no pak argument.
+    # This check used to sit above and rejected `--verify` on its own.
     if args.verify:
         bad = 0
         for z in sorted(out.glob("*.zip")):
@@ -118,6 +118,9 @@ def main() -> int:
                 print(f"         {p}"); bad += 1
         print(f"\n{'profile matches the editor' if not bad else str(bad) + ' deviations'}")
         return 1 if bad else 0
+
+    if not paks:
+        ap.error("give one or more .pak paths, or --all")
 
     for pak in paks:
         if not pak.is_file():
