@@ -31,8 +31,21 @@ def inline(s: str) -> str:
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"`(.+?)`", r"<code>\1</code>", s)
     s = re.sub(r"\[([^\]]+)\]\((https?://[^\s)]+)\)", r'<a href="\2">\1</a>', s)
-    # A bare URL becomes a link, but not one already inside an href above.
-    return re.sub(r'(?<![">=])(https?://[^\s<)]+)', r'<a href="\1">\1</a>', s)
+
+    # Bare URLs become links. Anchors built above are parked behind sentinels
+    # first, because the alternative is a lookbehind, and a lookbehind cannot
+    # tell "inside an href" from "right after a tag". One that excluded '>'
+    # silently left **{{URL}}** as plain text on six live pages: the URL sat
+    # immediately after <strong>, so the guard fired on the wrong thing.
+    parked: list[str] = []
+
+    def park(m: re.Match) -> str:
+        parked.append(m.group(0))
+        return f"\x00{len(parked) - 1}\x00"
+
+    s = re.sub(r"<a href=.*?</a>", park, s)
+    s = re.sub(r"(https?://[^\s<)]+)", r'<a href="\1">\1</a>', s)
+    return re.sub(r"\x00(\d+)\x00", lambda m: parked[int(m.group(1))], s)
 
 
 def md_to_html(md: str) -> str:
