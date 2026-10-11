@@ -74,6 +74,37 @@ Two things make the slot findable:
 neither its rendering nor its behaviour has ever been observed. Unused is not the
 same as free.
 
+## Availability is a value axis, and it is not power
+
+Custom specialists ship `isLocked: false` and `rang: 0`, so they appear on the
+first recruitment screen. **Twenty-four of Saber's twenty-five are locked behind
+progression and one is paid DLC.**
+
+That means a specialist whose numbers merely MATCH vanilla is still worth
+downloading, because the player can hire it twenty hours before the equivalent
+unlocks. Access is the product, not the multiplier.
+
+This is the way out of the balance trap. Every argument about whether a pair
+sits at 1.75x or 2.5x assumes power is the only thing on offer. It isn't, and
+reaching for a bigger number is the expensive way to add value:
+
+- **Overpowered is the thing people reject.** "Cheaty" is a review, not a stat.
+- **Vanilla-equivalent and available is neither cheaty nor boring.** It changes
+  *when* you get an ability, not *how strong the game is*.
+- **It leaves room for the honest version of a locked ability** rather than an
+  inflated one.
+
+Put it on the listing as a feature line and nothing more. "Available from the
+first recruitment screen. No rank requirement, no unlock, no DLC." Changing
+when content is available is what mods do; treating it as something to confess
+makes a normal thing sound like a cheat.
+
+⛔ **Do not gate a custom specialist to "fix" this without testing the unlock.**
+`isLocked`, `isLockedByDlc` and `upgradeToUnlock` all exist on the descriptor,
+and vanilla's `upgradeToUnlock` values could not be read out of
+`initial.cache_block`. Setting a lock whose condition never fires makes the
+specialist permanently unhirable, which is worse than being available too early.
+
 ## Name people, not equipment
 
 Names assembled from the job read as catalogue parts. Snatchblock, Gusset,
